@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#EFD694"/><stop offset=".55" stop-color="#DDBB6E"/><stop offset="1" stop-color="#B9964C"/>
+</linearGradient></defs>
+<rect width="1280" height="720" fill="url(#g)"/>
+<rect x="14" y="14" width="1252" height="692" fill="none" stroke="#5C4318" stroke-width="3" opacity=".55"/>
+<text x="640.0" y="346.0" text-anchor="middle" font-family="Georgia,serif" font-size="120" fill="#5C4318" opacity=".8">SC</text>
+<text x="640.0" y="450.0" text-anchor="middle" font-family="Georgia,serif" font-size="45" fill="#5C4318" opacity=".75">PREMIERE</text>
+<text x="640.0" y="690" text-anchor="middle" font-family="monospace" font-size="14" fill="#5C4318" opacity=".6">MEDIA PENDING</text>
+</svg>

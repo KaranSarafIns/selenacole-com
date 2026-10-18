@@ -1,0 +1,1 @@
+{"dependencies":{"@supabase/supabase-js":"^2.39.0","pdfkit":"^0.15.2","qrcode":"^1.5.4","sharp":"^0.33.5"},"description":"SelenaCole.com — backend + Studio (Supabase shared-schema machine)","name":"selenacole-com","private":true,"version":"1.0.0"}

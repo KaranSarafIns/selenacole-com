@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="1067" viewBox="0 0 600 1067">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#EFD694"/><stop offset=".55" stop-color="#DDBB6E"/><stop offset="1" stop-color="#B9964C"/>
+</linearGradient></defs>
+<rect width="600" height="1067" fill="url(#g)"/>
+<rect x="14" y="14" width="572" height="1039" fill="none" stroke="#5C4318" stroke-width="3" opacity=".55"/>
+<text x="300.0" y="519.5" text-anchor="middle" font-family="Georgia,serif" font-size="100" fill="#5C4318" opacity=".8">SC</text>
+<text x="300.0" y="608.5" text-anchor="middle" font-family="Georgia,serif" font-size="37" fill="#5C4318" opacity=".75">SET</text>
+<text x="300.0" y="1037" text-anchor="middle" font-family="monospace" font-size="14" fill="#5C4318" opacity=".6">MEDIA PENDING</text>
+</svg>

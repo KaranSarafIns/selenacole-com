@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio — Selena Cole</title>
+<style>
+:root{--bg:#0f0c06;--panel:#171208;--line:#3a2f18;--gold:#d4af37;--gold-d:#8a6d1c;
+--cream:#f5ead0;--mut:#9a8a5f;--dim:#6f6247;--ok:#7fb069;--warn:#d98e4a;--bad:#c96a5a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--cream);
+font-family:Georgia,'Times New Roman',serif;min-height:100vh}
+a{color:var(--gold)}button{font-family:inherit;cursor:pointer}
+.top{position:sticky;top:0;z-index:50;background:#0c0904ee;border-bottom:1px solid var(--line);
+padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.top h1{margin:0;font-size:19px;letter-spacing:3px;color:var(--gold);font-weight:normal}
+.top .sp{flex:1}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;padding:10px 16px 0}
+.tab{background:none;border:1px solid transparent;color:var(--mut);padding:8px 12px;border-radius:8px 8px 0 0;font-size:14px}
+.tab.on{color:var(--gold);border-color:var(--line);border-bottom-color:var(--panel);background:var(--panel)}
+.tab .bdg{background:var(--bad);color:#fff;font-size:10px;border-radius:99px;padding:1px 7px;margin-left:6px;font-family:Arial}
+.wrap{max-width:1180px;margin:0 auto;padding:18px 16px 80px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin:0 0 14px}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--gold);font-weight:normal;letter-spacing:1px}
+.card h3{margin:14px 0 8px;font-size:14px;color:var(--cream)}
+.mut{color:var(--mut);font-size:13px}.dim{color:var(--dim);font-size:12px}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.stat{background:#1d160b;border:1px solid var(--line);border-radius:10px;padding:14px}
+.stat .n{font-size:26px;color:var(--gold)}.stat .l{font-size:12px;color:var(--mut);margin-top:4px}
+label.fl{display:block;font-size:12px;color:var(--mut);margin:10px 0 4px;letter-spacing:.5px}
+input[type=text],input[type=email],input[type=password],input[type=datetime-local],input[type=url],select,textarea{
+width:100%;background:#0f0c06;border:1px solid var(--line);color:var(--cream);border-radius:8px;
+padding:9px 11px;font-size:14px;font-family:inherit}
+textarea{min-height:90px;resize:vertical}textarea.tall{min-height:220px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold-d)}
+.btn{background:var(--gold);color:#171208;border:none;border-radius:999px;padding:10px 22px;font-weight:bold;font-size:14px}
+.btn:hover{filter:brightness(1.08)}.btn.ghost{background:none;border:1px solid var(--gold-d);color:var(--gold)}
+.btn.small{padding:6px 14px;font-size:12px}.btn.danger{background:none;border:1px solid var(--bad);color:var(--bad)}
+.btn:disabled{opacity:.45;cursor:default}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row .grow{flex:1;min-width:140px}
+table.t{width:100%;border-collapse:collapse;font-size:13px}
+table.t th{text-align:left;color:var(--mut);font-weight:normal;font-size:11px;letter-spacing:1px;
+padding:8px;border-bottom:1px solid var(--line)}
+table.t td{padding:8px;border-bottom:1px solid #241d0e;vertical-align:top}
+table.t tr:hover td{background:#1a140a}
+.pill{display:inline-block;font-size:11px;border-radius:99px;padding:2px 10px;border:1px solid var(--line);color:var(--mut)}
+.pill.on{color:var(--ok);border-color:var(--ok)}.pill.off{color:var(--dim)}
+.pill.draft{color:var(--warn);border-color:var(--warn)}.pill.approved{color:var(--gold);border-color:var(--gold)}
+.pill.sent{color:var(--ok);border-color:var(--ok)}.pill.queued{color:#7aa5c9;border-color:#7aa5c9}
+.pill.new{color:var(--warn);border-color:var(--warn)}
+.switch{position:relative;width:44px;height:24px;flex:none}
+.switch input{opacity:0;width:0;height:0}
+.sl{position:absolute;inset:0;background:#2a2110;border:1px solid var(--line);border-radius:99px;transition:.2s}
+.sl:before{content:"";position:absolute;width:16px;height:16px;left:3px;top:3px;background:var(--mut);border-radius:50%;transition:.2s}
+.switch input:checked+.sl{background:#3d2f10;border-color:var(--gold-d)}
+.switch input:checked+.sl:before{transform:translateX(20px);background:var(--gold)}
+.tg{display:flex;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px solid #241d0e}
+.tg .t{flex:1}.tg .t b{display:block;font-size:14px;font-weight:normal}.tg .t span{font-size:12px;color:var(--dim)}
+.tg .grp{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase}
+.modal{position:fixed;inset:0;background:#000a;display:flex;align-items:center;justify-content:center;z-index:100;padding:16px}
+.modal .box{background:var(--panel);border:1px solid var(--gold-d);border-radius:14px;max-width:640px;width:100%;
+max-height:86vh;overflow:auto;padding:20px}
+.ver{border:1px solid var(--line);border-radius:8px;padding:10px;margin:8px 0;display:flex;gap:10px;align-items:center}
+.ver .when{font-size:12px;color:var(--mut)}
+.bars{display:flex;align-items:flex-end;gap:3px;height:90px;margin-top:10px}
+.bars div{flex:1;background:linear-gradient(#d4af37,#8a6d1c);border-radius:3px 3px 0 0;min-height:2px}
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login .box{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:36px;max-width:400px;width:100%;text-align:center}
+.login h1{color:var(--gold);letter-spacing:4px;font-weight:normal;margin:0 0 6px}
+.sec{border:1px dashed var(--line);border-radius:10px;padding:12px;margin:10px 0}
+.sec.off{opacity:.55}
+.sec-head{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.kv{display:flex;gap:8px;margin:6px 0}.kv input{flex:1}
+.thumb{width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--line);flex:none}
+.hide{display:none!important}
+.note{background:#1d160b;border-left:3px solid var(--gold-d);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px;color:var(--mut)}
+.err{color:var(--bad);font-size:13px;margin-top:8px}
+@media(max-width:640px){.wrap{padding:12px 10px 70px}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ============ Selena Cole Studio — single-file admin ============ */
+const $ = (s, el) => (el || document).querySelector(s);
+const $$ = (s, el) => Array.from((el || document).querySelectorAll(s));
+const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const LANGS = ['en','es','hi','gu','pa','fr','pt','de','it','ar','ja','ko','ru','zh'];
+const LANGN = {en:'English',es:'Spanish',hi:'Hindi',gu:'Gujarati',pa:'Punjabi',fr:'French',pt:'Portuguese',de:'German',it:'Italian',ar:'Arabic',ja:'Japanese',ko:'Korean',ru:'Russian',zh:'Chinese'};
+let D = null, TAB = 'dash', SUB = null;
+
+async function api(path, method, body) {
+  const r = await fetch(path, {
+    method: method || 'GET', credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json' },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+  if (r.status === 401) { location.reload(); throw new Error('auth'); }
+  const t = await r.text();
+  try { return JSON.parse(t); } catch (e) { return { ok: false, raw: t }; }
+}
+async function load() { D = await api('/api/admin/data'); if (!D.ok) throw new Error('load'); }
+
+/* ---------- version history modal (3.17) ---------- */
+async function verModal(itemType, itemId, lang, label) {
+  const v = await api(`/api/admin/versions?item_type=${encodeURIComponent(itemType)}&item_id=${encodeURIComponent(itemId)}${lang ? '&lang=' + encodeURIComponent(lang) : ''}`);
+  const rows = (v.versions || []).map((x, i) => {
+    const tag = x.seed_original ? 'restore original' : ('restore v' + ((v.versions.length - 1) - i || 1));
+    return `<div class="ver"><div style="flex:1"><b>${esc(tag)}</b><div class="when">${esc(x.created_at || '').slice(0,16).replace('T',' ')}</div></div>
+      <button class="btn small ghost" data-vres="${x.id}">Restore</button></div>`;
+  }).join('') || '<p class="mut">No versions yet — the next save creates one.</p>';
+  const m = document.createElement('div');
+  m.className = 'modal';
+  m.innerHTML = `<div class="box"><h2 style="color:var(--gold);font-weight:normal">Version history</h2>
+    <p class="mut">${esc(label || '')} — restoring snapshots the current text first, so a restore is always undoable.</p>
+    ${rows}<div class="row" style="margin-top:12px"><button class="btn ghost" data-close>Close</button></div></div>`;
+  document.body.appendChild(m);
+  m.addEventListener('click', async e => {
+    if (e.target.hasAttribute('data-close')) m.remove();
+    const id = e.target.getAttribute && e.target.getAttribute('data-vres');
+    if (id && confirm('Restore this version? The current text is snapshotted first.')) {
+      const r = await api('/api/admin/restore-version', 'POST', { version_id: id });
+      if (r.ok) { m.remove(); await load(); render(); }
+      else alert('Restore failed' + (r.error ? ': ' + r.error : ''));
+    }
+  });
+}
+const verBtn = (t, id, lang, label) =>
+  `<button class="btn small ghost" onclick="verModal('${t}','${id}','${esc(lang||'')}','${esc(label||'')}')">History</button>`;
+
+/* ---------- login / setup ---------- */
+function loginScreen(setupMode) {
+  $('#app').innerHTML = `<div class="login"><div class="box">
+    <h1>SELENA COLE</h1><p class="mut">Studio ${setupMode ? '— first run: set your password' : 'sign in'}</p>
+    <label class="fl" style="text-align:left">${setupMode ? 'Choose a password (min 8 chars)' : 'Password'}</label>
+    <input type="password" id="pw" autocomplete="current-password">
+    ${setupMode ? '' : '<p class="dim" style="margin-top:14px">First run? <a href="#" id="gsetup">set a password</a></p>'}
+    <div class="err" id="lerr"></div>
+    <div style="margin-top:16px"><button class="btn" id="go">${setupMode ? 'Set password' : 'Sign in'}</button></div>
+    ${setupMode ? '' : '<p class="dim">Raj sets and holds this password — it is never stored anywhere else.</p>'}
+  </div></div>`;
+  const go = async () => {
+    const pw = $('#pw').value;
+    $('#lerr').textContent = '';
+    if (setupMode) {
+      const r = await api('/api/admin/setup', 'POST', { password: pw });
+      if (r.ok) { const l = await api('/api/login', 'POST', { password: pw }); if (l.ok) return boot(); }
+      $('#lerr').textContent = r.error === 'already_set' ? 'A password is already set — sign in instead.' : 'Use at least 8 characters.';
+      if (r.error === 'already_set') setTimeout(() => loginScreen(false), 1500);
+    } else {
+      const r = await api('/api/login', 'POST', { password: pw });
+      if (r.ok) return boot();
+      $('#lerr').textContent = r.error === 'rate_limited' ? 'Too many tries — wait a few minutes.' : 'Wrong password.';
+    }
+  };
+  $('#go').onclick = go;
+  $('#pw').onkeydown = e => { if (e.key === 'Enter') go(); };
+  $('#pw').focus();
+  const gs = $('#gsetup'); if (gs) gs.onclick = e => { e.preventDefault(); loginScreen(true); };
+}
+</script>
+<script>
+/* ---------- shell ---------- */
+const TABS = [
+  ['dash', 'Dashboard'], ['content', 'Content'], ['reels', 'Reels'], ['gallery', 'Gallery'],
+  ['journal', 'Journal'], ['bt', 'Brutal Truth'], ['concierge', 'Concierge'], ['faqs', 'FAQs'],
+  ['inbox', 'Inbox'], ['news', 'Newsletter'], ['toggles', 'Toggles'], ['settings', 'Settings'], ['account', 'Account'],
+];
+function shell() {
+  const unread = D.unread || {};
+  const inboxN = (unread.enquiries || 0) + (unread.fan || 0);
+  const tabs = TABS.map(([k, l]) => {
+    const b = (k === 'inbox' && inboxN) ? `<span class="bdg">${inboxN}</span>` : '';
+    return `<button class="tab${TAB === k ? ' on' : ''}" data-tab="${k}">${l}${b}</button>`;
+  }).join('');
+  $('#app').innerHTML = `
+    <div class="top"><h1>SELENA COLE · STUDIO</h1><div class="sp"></div>
+      <span class="dim">Raj's Studio — add, edit, hide. Nothing here can delete.</span>
+      <button class="btn small ghost" id="logout">Sign out</button></div>
+    <div class="tabs">${tabs}</div>
+    <div class="wrap" id="view"></div>`;
+  $$('.tab').forEach(b => b.onclick = () => { TAB = b.dataset.tab; SUB = null; shell(); });
+  $('#logout').onclick = async () => { await api('/api/logout', 'POST'); location.reload(); };
+  render();
+}
+function render() {
+  const v = $('#view');
+  ({ dash: vDash, content: vContent, reels: vReels, gallery: vGallery, journal: vJournal,
+     bt: vBT, concierge: vConcierge, faqs: vFaqs, inbox: vInbox, news: vNews,
+     toggles: vToggles, settings: vSettings, account: vAccount })[TAB](v);
+}
+async function saveRows(table, rows, msg) {
+  const r = await api('/api/admin/save', 'POST', { table, rows });
+  if (r.ok) { await load(); render(); if (msg !== false) toast(msg || 'Saved — live on the site now.'); }
+  else toast('Save failed', true);
+  return r;
+}
+function toast(msg, isErr) {
+  const t = document.createElement('div');
+  t.style.cssText = `position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:${isErr ? '#4a1f18' : '#1d2f14'};
+    border:1px solid ${isErr ? 'var(--bad)' : 'var(--ok)'};color:var(--cream);padding:10px 22px;border-radius:99px;z-index:200;font-size:14px`;
+  t.textContent = msg; document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2600);
+}
+function langSel(cur, id) {
+  return `<select id="${id}">${LANGS.map(l => `<option value="${l}"${l === cur ? ' selected' : ''}>${LANGN[l]}</option>`).join('')}</select>`;
+}
+function showTg(checked) {
+  return `<label class="switch" title="visible on site"><input type="checkbox" data-f="show"${checked ? ' checked' : ''}><span class="sl"></span></label>`;
+}
+function pillFor(s) {
+  const m = { new: 'new', read: '', replied: 'on', confirmed: 'on', pending: 'draft', unsubscribed: 'off', draft: 'draft', approved: 'approved', queued: 'queued', sent: 'sent', failed: 'off' };
+  return `<span class="pill ${m[s] || ''}">${esc(s)}</span>`;
+}
+const dstr = iso => (iso || '').slice(0, 16).replace('T', ' ');
+
+/* ---------- dashboard ---------- */
+function vDash(v) {
+  const a = D.analytics || {}, un = D.unread || {};
+  const days = Object.keys(a.visitsByDay || {}).sort().slice(-14);
+  const max = Math.max(1, ...days.map(d => a.visitsByDay[d]));
+  const bars = days.map(d => `<div style="height:${Math.round(a.visitsByDay[d] / max * 88) + 2}px" title="${d}: ${a.visitsByDay[d]}"></div>`).join('');
+  const tops = (a.topPaths || []).map(([p, n]) => `<tr><td>${esc(p)}</td><td style="text-align:right">${n}</td></tr>`).join('');
+  v.innerHTML = `
+  <div class="grid g3">
+    <div class="stat"><div class="n">${a.visits || 0}</div><div class="l">visits tracked</div></div>
+    <div class="stat"><div class="n">${a.byType && a.byType.chat || 0}</div><div class="l">concierge chats opened</div></div>
+    <div class="stat"><div class="n">${un.signups || 0}</div><div class="l">confirmed newsletter subscribers</div></div>
+    <div class="stat"><div class="n">${un.enquiries || 0}</div><div class="l">unread partner enquiries</div></div>
+    <div class="stat"><div class="n">${un.fan || 0}</div><div class="l">unread fan messages</div></div>
+    <div class="stat"><div class="n">${(D.newsletter_issues || []).filter(i => i.status !== 'sent').length}</div><div class="l">newsletter issues in flight</div></div>
+  </div>
+  <div class="card"><h2>Visits — last 14 days</h2><div class="bars">${bars || '<span class="mut">No visits tracked yet.</span>'}</div>
+    <p class="dim">${days.length ? days[0] + ' → ' + days[days.length - 1] : ''}</p></div>
+  <div class="card"><h2>Top pages</h2><table class="t"><tr><th>Path</th><th style="text-align:right">Events</th></tr>${tops || '<tr><td class="mut">Nothing yet.</td><td></td></tr>'}</table></div>
+  <div class="note">Analytics update live from day one — every page view, chat open, signup, enquiry and fan message is tracked the moment it happens. No dead dashboards here.</div>`;
+}
+</script>
+<script>
+/* ---------- content (pages × languages) ---------- */
+let cLang = 'en', cPage = 'home';
+function vContent(v) {
+  const rows = D.pages_content.filter(p => p.lang === cLang);
+  if (!rows.length && cPage !== 'home') cPage = 'home';
+  const pages = [...new Set(D.pages_content.filter(p => p.lang === cLang).map(p => p.page))];
+  if (!pages.includes(cPage)) cPage = pages[0] || 'home';
+  const row = D.pages_content.find(p => p.page === cPage && p.lang === cLang);
+  const bodyTxt = row ? JSON.stringify(row.body || [], null, 2) : '[]';
+  const meta = (row && row.meta) || {};
+  v.innerHTML = `<div class="card"><h2>Site content</h2>
+    <div class="row"><div><label class="fl">Language</label>${langSel(cLang, 'clang')}</div>
+    <div class="grow"><label class="fl">Page</label><select id="cpage">${pages.map(p => `<option${p === cPage ? ' selected' : ''}>${p}</option>`).join('')}</select></div>
+    <div>${verBtn('pages_content', row ? row.id : '', cLang, cPage + ' (' + cLang + ')')}</div></div>
+    <div class="row" style="margin-top:6px"><span class="mut">Visible on site</span>${showTg(row ? row.show !== false : true)}
+      <span class="dim">Edits go live on the next page load. History keeps the last 3 versions + the original.</span></div></div>
+  <div class="card"><h2>${esc(cPage)} <span class="dim">(${LANGN[cLang]})</span></h2>
+    <label class="fl">Title</label><input type="text" id="ctitle" value="${esc(row ? row.title : '')}">
+    <label class="fl">Subtitle</label><input type="text" id="csub" value="${esc(row ? row.subtitle : '')}">
+    <label class="fl">Body blocks (JSON — one entry per section, the site reads each key)</label>
+    <textarea class="tall" id="cbody" spellcheck="false">${esc(bodyTxt)}</textarea>
+    <div class="grid g2"><div><label class="fl">Meta title (SEO)</label><input type="text" id="cmt" value="${esc(meta.title || '')}"></div>
+    <div><label class="fl">Meta description (SEO)</label><input type="text" id="cmd" value="${esc(meta.description || '')}"></div></div>
+    <div class="row" style="margin-top:14px"><button class="btn" id="csave">Save page</button></div>
+    <div class="err" id="cerr"></div></div>`;
+  $('#clang').onchange = e => { cLang = e.target.value; render(); };
+  $('#cpage').onchange = e => { cPage = e.target.value; render(); };
+  document.querySelector('#view [data-f="show"]');
+  $('#csave').onclick = async () => {
+    let body;
+    try { body = JSON.parse($('#cbody').value); if (!Array.isArray(body)) throw 0; }
+    catch (e) { $('#cerr').textContent = 'Body must be valid JSON (an array).'; return; }
+    await saveRows('pages_content', [{
+      id: row ? row.id : undefined, page: cPage, lang: cLang,
+      title: $('#ctitle').value, subtitle: $('#csub').value, body,
+      meta: { title: $('#cmt').value, description: $('#cmd').value },
+      show: $('[data-f="show"]').checked,
+    }]);
+  };
+}
+
+/* ---------- reels ---------- */
+let rLang = 'en';
+function vReels(v) {
+  const rows = D.reels.filter(r => r.lang === rLang).sort((a, b) => a.sort - b.sort);
+  const li = rows.map(r => `<tr>
+    <td>${r.featured ? '⭐ ' : ''}${esc(r.title) || '<span class="dim">(untitled)</span>'}<div class="dim">${esc(r.item_key)}</div></td>
+    <td>${r.thumbnail_url ? `<img class="thumb" src="${esc(r.thumbnail_url)}" loading="lazy">` : '<span class="dim">—</span>'}</td>
+    <td>${esc(r.mood || '')}${r.season ? '<br>' + esc(r.season) : ''}${r.premiere_at ? '<br>🎬 ' + dstr(r.premiere_at) : ''}</td>
+    <td>${r.show ? '<span class="pill on">live</span>' : '<span class="pill off">hidden</span>'}</td>
+    <td><button class="btn small ghost" data-edit="${r.id}">Edit</button></td></tr>`).join('');
+  v.innerHTML = `<div class="card"><h2>Reels theatre</h2>
+    <div class="row"><div><label class="fl">Language</label>${langSel(rLang, 'rlang')}</div>
+    <div class="sp" style="flex:1"></div><button class="btn" id="radd">+ New reel</button></div>
+    <p class="mut">Show/hide per reel — hidden reels vanish from the theatre, no dead links. ⭐ = featured premiere slot.</p></div>
+  <div class="card"><table class="t"><tr><th>Reel</th><th>Poster</th><th>Mood / premiere</th><th>Status</th><th></th></tr>
+    ${li || '<tr><td colspan="5" class="mut">No reels in this language yet.</td></tr>'}</table></div>
+  <div id="redit"></div>`;
+  $('#rlang').onchange = e => { rLang = e.target.value; render(); };
+  $('#radd').onclick = () => reelForm(null);
+  $$('#view [data-edit]').forEach(b => b.onclick = () => reelForm(D.reels.find(x => x.id === b.dataset.edit)));
+}
+function reelForm(r) {
+  const isNew = !r; r = r || { lang: rLang };
+  $('#redit').innerHTML = `<div class="card"><h2>${isNew ? 'New reel' : 'Edit reel'}</h2>
+    <div class="grid g2">
+      <div><label class="fl">Title</label><input type="text" id="f_title" value="${esc(r.title || '')}"></div>
+      <div><label class="fl">Stable key</label><input type="text" id="f_key" value="${esc(r.item_key || '')}" ${isNew ? '' : 'disabled'}></div>
+    </div>
+    <label class="fl">Caption</label><textarea id="f_caption">${esc(r.caption || '')}</textarea>
+    <div class="grid g2">
+      <div><label class="fl">Video URL</label><input type="url" id="f_video" value="${esc(r.video_url || '')}"></div>
+      <div><label class="fl">Poster / thumbnail URL</label><input type="url" id="f_thumb" value="${esc(r.thumbnail_url || '')}"></div>
+    </div>
+    <div class="grid g3">
+      <div><label class="fl">Mood</label><input type="text" id="f_mood" value="${esc(r.mood || '')}"></div>
+      <div><label class="fl">Season</label><input type="text" id="f_season" value="${esc(r.season || '')}"></div>
+      <div><label class="fl">Duration</label><input type="text" id="f_dur" value="${esc(r.duration || '')}"></div>
+    </div>
+    <div class="grid g3">
+      <div><label class="fl">Sort order</label><input type="text" id="f_sort" value="${r.sort == null ? 0 : r.sort}"></div>
+      <div><label class="fl">Premiere at (optional)</label><input type="datetime-local" id="f_prem" value="${(r.premiere_at || '').slice(0, 16)}"></div>
+      <div><label class="fl">Featured</label><br><label class="switch"><input type="checkbox" id="f_feat"${r.featured ? ' checked' : ''}><span class="sl"></span></label></div>
+    </div>
+    <div class="row" style="margin-top:10px"><span class="mut">Visible on site</span><label class="switch"><input type="checkbox" id="f_show"${r.show !== false ? ' checked' : ''}><span class="sl"></span></label></div>
+    <div class="row" style="margin-top:14px"><button class="btn" id="fsave">Save reel</button>
+      ${isNew ? '' : verBtn('reels', r.id, r.lang, r.title)}
+      <button class="btn ghost" id="fcancel">Cancel</button></div></div>`;
+  $('#fcancel').onclick = () => { $('#redit').innerHTML = ''; };
+  $('#fsave').onclick = async () => {
+    const prem = $('#f_prem').value;
+    await saveRows('reels', [{
+      id: isNew ? undefined : r.id, item_key: $('#f_key').value.trim() || undefined, lang: rLang,
+      title: $('#f_title').value, caption: $('#f_caption').value,
+      video_url: $('#f_video').value.trim(), thumbnail_url: $('#f_thumb').value.trim(),
+      mood: $('#f_mood').value.trim(), season: $('#f_season').value.trim(), duration: $('#f_dur').value.trim(),
+      sort: parseInt($('#f_sort').value) || 0, featured: $('#f_feat').checked,
+      premiere_at: prem ? new Date(prem).toISOString() : null, show: $('#f_show').checked,
+    }]);
+  };
+  $('#redit').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ---------- gallery ---------- */
+let gLang = 'en', gSet = null;
+function vGallery(v) {
+  const sets = D.gallery_sets.filter(s => s.lang === gLang).sort((a, b) => a.sort - b.sort);
+  if (!sets.find(s => s.set_key === gSet)) gSet = sets.length ? sets[0].set_key : null;
+  const items = D.gallery_items.filter(i => i.lang === gLang && i.set_key === gSet).sort((a, b) => a.sort - b.sort);
+  const setBtns = sets.map(s => `<button class="tab${s.set_key === gSet ? ' on' : ''}" data-gs="${s.set_key}">${esc(s.title) || s.set_key}</button>`).join('');
+  const li = items.map(it => `<tr>
+    <td>${it.image_url ? `<img class="thumb" src="${esc(it.image_url_phone || it.image_url)}" loading="lazy">` : '<span class="dim">—</span>'}</td>
+    <td>${esc(it.caption) || '<span class="dim">(no caption)</span>'}<div class="dim">alt: ${esc(it.alt) || '<b style="color:var(--bad)">missing</b>'}</div></td>
+    <td>${it.show ? '<span class="pill on">live</span>' : '<span class="pill off">hidden</span>'}</td>
+    <td><button class="btn small ghost" data-iedit="${it.id}">Edit</button></td></tr>`).join('');
+  const cur = sets.find(s => s.set_key === gSet);
+  v.innerHTML = `<div class="card"><h2>Gallery sets</h2>
+    <div class="row"><div><label class="fl">Language</label>${langSel(gLang, 'glang')}</div>
+    <div class="sp" style="flex:1"></div><button class="btn" id="gsadd">+ New set</button></div>
+    <div class="tabs" style="padding:12px 0 0">${setBtns || '<span class="mut">No sets yet.</span>'}</div></div>
+  ${cur ? `<div class="card"><h2>${esc(cur.title)} ${cur.show ? '' : '<span class="pill off">hidden</span>'}</h2>
+    <div class="row"><button class="btn" id="giadd">+ Add photo</button>
+      <button class="btn ghost" id="gsedit">Edit set</button>${verBtn('gallery_sets', cur.id, gLang, cur.title)}
+      <span class="dim">Uploads auto-resize to web + phone sizes. Alt text is required.</span></div>
+    <table class="t" style="margin-top:10px"><tr><th></th><th>Caption</th><th>Status</th><th></th></tr>
+    ${li || '<tr><td colspan="4" class="mut">No photos in this set yet.</td></tr>'}</table></div>
+  <div id="gedit"></div>` : ''}`;
+  $('#glang').onchange = e => { gLang = e.target.value; render(); };
+  $$('#view [data-gs]').forEach(b => b.onclick = () => { gSet = b.dataset.gs; render(); });
+  const ga = $('#gsadd'); if (ga) ga.onclick = () => gSetForm(null);
+  const ge = $('#gsedit'); if (ge) ge.onclick = () => gSetForm(cur);
+  const gia = $('#giadd'); if (gia) gia.onclick = () => gItemForm(null, cur);
+  $$('#view [data-iedit]').forEach(b => b.onclick = () => gItemForm(D.gallery_items.find(x => x.id === b.dataset.iedit), cur));
+}
+function gSetForm(s) {
+  const isNew = !s; s = s || { lang: gLang };
+  $('#gedit').innerHTML = `<div class="card"><h2>${isNew ? 'New set' : 'Edit set'}</h2>
+    <div class="grid g2"><div><label class="fl">Title</label><input type="text" id="f_title" value="${esc(s.title || '')}"></div>
+    <div><label class="fl">Stable key</label><input type="text" id="f_key" value="${esc(s.set_key || '')}" ${isNew ? '' : 'disabled'}></div></div>
+    <label class="fl">Description</label><textarea id="f_desc">${esc(s.description || '')}</textarea>
+    <div class="grid g2"><div><label class="fl">Cover image URL</label><input type="url" id="f_cover" value="${esc(s.cover_image || '')}"></div>
+    <div><label class="fl">Season tag</label><input type="text" id="f_season" value="${esc(s.season || '')}"></div></div>
+    <div class="row" style="margin-top:10px"><span class="mut">Visible on site</span>
+      <label class="switch"><input type="checkbox" id="f_show"${s.show !== false ? ' checked' : ''}><span class="sl"></span></label></div>
+    <div class="row" style="margin-top:14px"><button class="btn" id="fsave">Save set</button>
+      <button class="btn ghost" id="fcancel">Cancel</button></div></div>`;
+  $('#fcancel').onclick = () => { $('#gedit').innerHTML = ''; };
+  $('#fsave').onclick = () => saveRows('gallery_sets', [{
+    id: isNew ? undefined : s.id, set_key: $('#f_key').value.trim() || undefined, lang: gLang,
+    title: $('#f_title').value, description: $('#f_desc').value,
+    cover_image: $('#f_cover').value.trim(), season: $('#f_season').value.trim(),
+    sort: s.sort == null ? 99 : s.sort, show: $('#f_show').checked,
+  }]);
+}
+function gItemForm(it, setRow) {
+  const isNew = !it; it = it || {};
+  $('#gedit').innerHTML = `<div class="card"><h2>${isNew ? 'Add photo' : 'Edit photo'}</h2>
+    <label class="fl">Upload new image (auto-resized web + phone)</label>
+    <div class="row"><input type="file" id="f_file" accept="image/jpeg,image/png,image/webp" style="flex:1">
+    <input type="text" id="f_altup" placeholder="Alt text for the upload (required)" style="flex:2"></div>
+    <div class="err" id="uferr"></div>
+    <label class="fl">…or image URL</label><input type="url" id="f_url" value="${esc(it.image_url || '')}">
+    <label class="fl">Caption (her voice)</label><input type="text" id="f_cap" value="${esc(it.caption || '')}">
+    <label class="fl">Alt text (required — screen readers + the a11y widget)</label><input type="text" id="f_alt" value="${esc(it.alt || '')}">
+    <div class="row" style="margin-top:10px"><span class="mut">Visible on site</span>
+      <label class="switch"><input type="checkbox" id="f_show"${it.show !== false ? ' checked' : ''}><span class="sl"></span></label></div>
+    <div class="row" style="margin-top:14px"><button class="btn" id="fsave">Save photo</button>
+      ${isNew ? '' : verBtn('gallery_items', it.id, gLang, it.caption)}
+      <button class="btn ghost" id="fcancel">Cancel</button></div></div>`;
+  $('#fcancel').onclick = () => { $('#gedit').innerHTML = ''; };
+  $('#f_file').onchange = async e => {
+    const f = e.target.files[0]; if (!f) return;
+    const alt = $('#f_altup').value.trim();
+    if (!alt) { $('#uferr').textContent = 'Alt text is required before uploading.'; return; }
+    $('#uferr').textContent = 'Uploading + resizing…';
+    const buf = await f.arrayBuffer();
+    let b64 = ''; const bytes = new Uint8Array(buf);
+    for (let i = 0; i < bytes.length; i += 0x8000) b64 += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    const r = await api('/api/admin/upload', 'POST', { filename: f.name, contentBase64: btoa(b64), alt });
+    if (r.ok) { $('#f_url').value = r.url; $('#f_alt').value = r.alt; $('#uferr').textContent = 'Uploaded ✓ (+ phone-size copy)'; }
+    else $('#uferr').textContent = 'Upload failed: ' + (r.error || 'error');
+  };
+  $('#fsave').onclick = async () => {
+    if (!$('#f_alt').value.trim()) { $('#uferr').textContent = 'Alt text is required.'; return; }
+    await saveRows('gallery_items', [{
+      id: isNew ? undefined : it.id, item_key: it.item_key || undefined,
+      set_key: setRow.set_key, lang: gLang, image_url: $('#f_url').value.trim(),
+      image_url_phone: $('#f_url').value.trim(), caption: $('#f_cap').value,
+      alt: $('#f_alt').value.trim(), sort: it.sort == null ? 99 : it.sort, show: $('#f_show').checked,
+    }]);
+  };
+}
+
+/* ---------- journal ---------- */
+let jLang = 'en';
+function vJournal(v) {
+  const rows = D.journal_posts.filter(j => j.lang === jLang).sort((a, b) => (b.published_at || '').localeCompare(a.published_at || ''));
+  const li = rows.map(j => `<tr><td>${esc(j.title) || '<span class="dim">(untitled)</span>'}<div class="dim">${dstr(j.published_at)}</div></td>
+    <td>${j.show ? '<span class="pill on">live</span>' : '<span class="pill off">hidden</span>'}</td>
+    <td><button class="btn small ghost" data-jedit="${j.id}">Edit</button></td></tr>`).join('');
+  v.innerHTML = `<div class="card"><h2>Journal</h2>
+    <div class="row"><div><label class="fl">Language</label>${langSel(jLang, 'jlang')}</div>
+    <div class="sp" style="flex:1"></div><button class="btn" id="jadd">+ New post</button></div></div>
+  <div class="card"><table class="t"><tr><th>Post</th><th>Status</th><th></th></tr>
+    ${li || '<tr><td colspan="3" class="mut">No posts yet.</td></tr>'}</table></div><div id="jedit"></div>`;
+  $('#jlang').onchange = e => { jLang = e.target.value; render(); };
+  $('#jadd').onclick = () => journalForm(null);
+  $$('#view [data-jedit]').forEach(b => b.onclick = () => journalForm(D.journal_posts.find(x => x.id === b.dataset.jedit)));
+}
+function journalForm(j) {
+  const isNew = !j; j = j || { lang: jLang };
+  $('#jedit').innerHTML = `<div class="card"><h2>${isNew ? 'New post' : 'Edit post'}</h2>
+    <div class="grid g2"><div><label class="fl">Title</label><input type="text" id="f_title" value="${esc(j.title || '')}"></div>
+    <div><label class="fl">Stable key</label><input type="text" id="f_key" value="${esc(j.post_key || '')}" ${isNew ? '' : 'disabled'}></div></div>
+    <label class="fl">Excerpt</label><textarea id="f_ex">${esc(j.excerpt || '')}</textarea>
+    <label class="fl">Body</label><textarea class="tall" id="f_body">${esc(j.body || '')}</textarea>
+    <div class="grid g2"><div><label class="fl">Cover image URL</label><input type="url" id="f_cover" value="${esc(j.cover_image || '')}"></div>
+    <div><label class="fl">Publish date</label><input type="datetime-local" id="f_pub" value="${(j.published_at || '').slice(0, 16)}"></div></div>
+    <div class="row" style="margin-top:10px"><span class="mut">Visible on site</span>
+      <label class="switch"><input type="checkbox" id="f_show"${j.show !== false ? ' checked' : ''}><span class="sl"></span></label></div>
+    <div class="row" style="margin-top:14px"><button class="btn" id="fsave">Save post</button>
+      ${isNew ? '' : verBtn('journal_posts', j.id, j.lang, j.title)}
+      <button class="btn ghost" id="fcancel">Cancel</button></div></div>`;
+  $('#fcancel').onclick = () => { $('#jedit').innerHTML = ''; };
+  $('#fsave').onclick = () => saveRows('journal_posts', [{
+    id: isNew ? undefined : j.id, post_key: $('#f_key').value.trim() || undefined, lang: jLang,
+    title: $('#f_title').value, slug: $('#f_key').value.trim() || undefined,
+    excerpt: $('#f_ex').value, body: $('#f_body').value, cover_image: $('#f_cover').value.trim(),
+    published_at: $('#f_pub').value ? new Date($('#f_pub').value).toISOString() : null,
+    show: $('#f_show').checked,
+  }]);
+}
+</script>
+<script>
+/* ---------- brutal truth ---------- */
+let bLang = 'en', bCat = null;
+function vBT(v) {
+  const cats = D.bt_categories.filter(c => c.lang === bLang).sort((a, b) => a.sort - b.sort);
+  if (!cats.find(c => c.cat_key === bCat)) bCat = cats.length ? cats[0].cat_key : null;
+  const arts = D.bt_articles.filter(a => a.lang === bLang && (!bCat || a.cat_key === bCat))
+    .sort((a, b) => (b.published_at || '').localeCompare(a.published_at || ''));
+  const catBtns = cats.map(c => `<button class="tab${c.cat_key === bCat ? ' on' : ''}" data-bc="${c.cat_key}">${esc(c.name)}</button>`).join('');
+  const li = arts.map(a => `<tr><td>${esc(a.title) || '<span class="dim">(untitled)</span>'}<div class="dim">/${esc(a.cat_key)}/${esc(a.slug)}${a.draft_note ? ' · 📝 ' + esc(a.draft_note) : ''}</div></td>
+    <td>${a.published ? '<span class="pill on">published</span>' : '<span class="pill draft">draft</span>'}</td>
+    <td><button class="btn small ghost" data-aedit="${a.id}">Edit</button></td></tr>`).join('');
+  const cur = cats.find(c => c.cat_key === bCat);
+  v.innerHTML = `<div class="card"><h2><span style="font-family:monospace;color:#cd7f32">brutal truth</span></h2>
+    <div class="row"><div><label class="fl">Language</label>${langSel(bLang, 'blang')}</div>
+    <div class="sp" style="flex:1"></div><button class="btn" id="aadd">+ New article</button>
+    <button class="btn ghost" id="cadd">+ New category</button></div>
+    <div class="tabs" style="padding:12px 0 0">${catBtns || '<span class="mut">No categories yet.</span>'}</div>
+    <p class="mut">After the starter pack, new articles arrive here as drafts for one-click approval — the scheduler never publishes on its own.</p></div>
+  <div class="card"><table class="t"><tr><th>Article</th><th>Status</th><th></th></tr>
+    ${li || '<tr><td colspan="3" class="mut">No articles in this category yet.</td></tr>'}</table></div>
+  <div id="bedit"></div>`;
+  $('#blang').onchange = e => { bLang = e.target.value; render(); };
+  $$('#view [data-bc]').forEach(b => b.onclick = () => { bCat = b.dataset.bc; render(); });
+  $('#aadd').onclick = () => articleForm(null);
+  $('#cadd').onclick = () => catForm(null);
+  $$('#view [data-aedit]').forEach(b => b.onclick = () => articleForm(D.bt_articles.find(x => x.id === b.dataset.aedit)));
+}
+function catForm(c) {
+  const isNew = !c; c = c || { lang: bLang };
+  $('#bedit').innerHTML = `<div class="card"><h2>${isNew ? 'New category' : 'Edit category'}</h2>
+    <div class="grid g2"><div><label class="fl">Name</label><input type="text" id="f_name" value="${esc(c.name || '')}"></div>
+    <div><label class="fl">Stable key</label><input type="text" id="f_key" value="${esc(c.cat_key || '')}" ${isNew ? '' : 'disabled'}></div></div>
+    <label class="fl">Description</label><textarea id="f_desc">${esc(c.description || '')}</textarea>
+    <div class="row" style="margin-top:10px"><span class="mut">Visible on site</span>
+      <label class="switch"><input type="checkbox" id="f_show"${c.show !== false ? ' checked' : ''}><span class="sl"></span></label></div>
+    <div class="row" style="margin-top:14px"><button class="btn" id="fsave">Save category</button>
+      <button class="btn ghost" id="fcancel">Cancel</button></div></div>`;
+  $('#fcancel').onclick = () => { $('#bedit').innerHTML = ''; };
+  $('#fsave').onclick = () => saveRows('bt_categories', [{
+    id: isNew ? undefined : c.id, cat_key: $('#f_key').value.trim() || undefined, lang: bLang,
+    name: $('#f_name').value, slug: $('#f_key').value.trim() || undefined,
+    description: $('#f_desc').value, sort: c.sort == null ? 99 : c.sort, show: $('#f_show').checked,
+  }]);
+}
+function articleForm(a) {
+  const isNew = !a; a = a || { lang: bLang, cat_key: bCat };
+  const cats = D.bt_categories.filter(c => c.lang === bLang);
+  $('#bedit').innerHTML = `<div class="card"><h2>${isNew ? 'New article' : 'Edit article'}</h2>
+    <div class="grid g2"><div><label class="fl">Title</label><input type="text" id="f_title" value="${esc(a.title || '')}"></div>
+    <div><label class="fl">Stable key</label><input type="text" id="f_key" value="${esc(a.article_key || '')}" ${isNew ? '' : 'disabled'}></div></div>
+    <div class="grid g2"><div><label class="fl">Category</label><select id="f_cat">${cats.map(c => `<option value="${c.cat_key}"${c.cat_key === a.cat_key ? ' selected' : ''}>${esc(c.name)}</option>`).join('')}</select></div>
+    <div><label class="fl">Publish date</label><input type="datetime-local" id="f_pub" value="${(a.published_at || '').slice(0, 16)}"></div></div>
+    <label class="fl">Excerpt (teaser)</label><textarea id="f_ex">${esc(a.excerpt || '')}</textarea>
+    <label class="fl">Body (HTML)</label><textarea class="tall" id="f_body" spellcheck="false">${esc(a.body || '')}</textarea>
+    <div class="grid g2"><div><label class="fl">Cover image URL</label><input type="url" id="f_cover" value="${esc(a.cover_image || '')}"></div>
+    <div><label class="fl">Draft note (internal)</label><input type="text" id="f_note" value="${esc(a.draft_note || '')}"></div></div>
+    <div class="row" style="margin-top:10px"><span class="mut">Published on site</span>
+      <label class="switch"><input type="checkbox" id="f_pub2"${a.published ? ' checked' : ''}><span class="sl"></span></label></div>
+    <div class="row" style="margin-top:14px"><button class="btn" id="fsave">Save article</button>
+      ${isNew ? '' : verBtn('bt_articles', a.id, a.lang, a.title)}
+      <button class="btn ghost" id="fcancel">Cancel</button></div></div>`;
+  $('#fcancel').onclick = () => { $('#bedit').innerHTML = ''; };
+  $('#fsave').onclick = () => saveRows('bt_articles', [{
+    id: isNew ? undefined : a.id, article_key: $('#f_key').value.trim() || undefined, lang: bLang,
+    cat_key: $('#f_cat').value, title: $('#f_title').value, slug: $('#f_key').value.trim() || undefined,
+    excerpt: $('#f_ex').value, body: $('#f_body').value, cover_image: $('#f_cover').value.trim(),
+    published: $('#f_pub2').checked, published_at: $('#f_pub').value ? new Date($('#f_pub').value).toISOString() : null,
+    sort: a.sort == null ? 99 : a.sort, draft_note: $('#f_note').value.trim(),
+  }]);
+}
+
+/* ---------- concierge (chatbot) ---------- */
+let cbLang = 'en';
+function vConcierge(v) {
+  const rows = D.chatbot_replies.filter(r => r.lang === cbLang);
+  const li = rows.map(r => `<tr><td><b>${esc(r.question) || '<span class="dim">(no question)</span>'}</b>
+      <div class="mut" style="margin-top:4px">${esc((r.answer || '').slice(0, 140))}${(r.answer || '').length > 140 ? '…' : ''}</div>
+      <div class="dim">key: ${esc(r.key)} · keywords: ${esc(r.keywords || '—')}</div></td>
+    <td>${r.show ? '<span class="pill on">live</span>' : '<span class="pill off">hidden</span>'}</td>
+    <td><button class="btn small ghost" data-cbedit="${r.id}">Edit</button></td></tr>`).join('');
+  v.innerHTML = `<div class="card"><h2>Selena's Concierge</h2>
+    <div class="row"><div><label class="fl">Language</label>${langSel(cbLang, 'cblang')}</div>
+    <div class="sp" style="flex:1"></div><button class="btn" id="cbadd">+ New reply</button></div>
+    <div class="note"><b>Standing rule:</b> the concierge NEVER pretends to be Selena. Identity questions
+    ("are you really Selena?") get the honest helper answer; partner/business questions route to the
+    Partners enquiry form; fan questions get warm helper answers — never first-person-as-Selena.
+    Keep every reply in that voice.</div></div>
+  <div class="card"><table class="t"><tr><th>Reply</th><th>Status</th><th></th></tr>
+    ${li || '<tr><td colspan="3" class="mut">No replies in this language yet.</td></tr>'}</table></div>
+  <div id="cbedit"></div>`;
+  $('#cblang').onchange = e => { cbLang = e.target.value; render(); };
+  $('#cbadd').onclick = () => cbForm(null);
+  $$('#view [data-cbedit]').forEach(b => b.onclick = () => cbForm(D.chatbot_replies.find(x => x.id === b.dataset.cbedit)));
+}
+function cbForm(r) {
+  const isNew = !r; r = r || { lang: cbLang };
+  $('#cbedit').innerHTML = `<div class="card"><h2>${isNew ? 'New reply' : 'Edit reply'}</h2>
+    <div class="grid g2"><div><label class="fl">Question (what the fan asks)</label><input type="text" id="f_q" value="${esc(r.question || '')}"></div>
+    <div><label class="fl">Stable key</label><input type="text" id="f_key" value="${esc(r.key || '')}" ${isNew ? '' : 'disabled'}></div></div>
+    <label class="fl">Answer (concierge voice — helpful, warm, never "I am Selena")</label>
+    <textarea class="tall" id="f_a">${esc(r.answer || '')}</textarea>
+    <label class="fl">Keywords (comma-separated — what this reply matches)</label>
+    <input type="text" id="f_kw" value="${esc(r.keywords || '')}">
+    <div class="row" style="margin-top:10px"><span class="mut">Live</span>
+      <label class="switch"><input type="checkbox" id="f_show"${r.show !== false ? ' checked' : ''}><span class="sl"></span></label></div>
+    <div class="row" style="margin-top:14px"><button class="btn" id="fsave">Save reply</button>
+      ${isNew ? '' : verBtn('chatbot_replies', r.id, r.lang, r.question)}
+      <button class="btn ghost" id="fcancel">Cancel</button></div></div>`;
+  $('#fcancel').onclick = () => { $('#cbedit').innerHTML = ''; };
+  $('#fsave').onclick = () => saveRows('chatbot_replies', [{
+    id: isNew ? undefined : r.id, key: $('#f_key').value.trim() || undefined, lang: cbLang,
+    question: $('#f_q').value, answer: $('#f_a').value, keywords: $('#f_kw').value.trim(),
+    show: $('#f_show').checked,
+  }]);
+}
+
+/* ---------- FAQs ---------- */
+let fLang = 'en';
+function vFaqs(v) {
+  const rows = D.faqs.filter(f => f.lang === fLang).sort((a, b) => a.sort - b.sort);
+  const li = rows.map(f => `<tr><td><b>${esc(f.q)}</b><div class="mut" style="margin-top:4px">${esc((f.a || '').slice(0, 120))}${(f.a || '').length > 120 ? '…' : ''}</div></td>
+    <td>${f.show ? '<span class="pill on">live</span>' : '<span class="pill off">hidden</span>'}</td>
+    <td><button class="btn small ghost" data-fedit="${f.id}">Edit</button></td></tr>`).join('');
+  v.innerHTML = `<div class="card"><h2>FAQs</h2>
+    <div class="row"><div><label class="fl">Language</label>${langSel(fLang, 'flang')}</div>
+    <div class="sp" style="flex:1"></div><button class="btn" id="fadd">+ New FAQ</button></div></div>
+  <div class="card"><table class="t"><tr><th>Question</th><th>Status</th><th></th></tr>
+    ${li || '<tr><td colspan="3" class="mut">No FAQs in this language yet.</td></tr>'}</table></div>
+  <div id="fedit"></div>`;
+  $('#flang').onchange = e => { fLang = e.target.value; render(); };
+  $('#fadd').onclick = () => faqForm(null);
+  $$('#view [data-fedit]').forEach(b => b.onclick = () => faqForm(D.faqs.find(x => x.id === b.dataset.fedit)));
+}
+function faqForm(f) {
+  const isNew = !f; f = f || { lang: fLang };
+  $('#fedit').innerHTML = `<div class="card"><h2>${isNew ? 'New FAQ' : 'Edit FAQ'}</h2>
+    <label class="fl">Question</label><input type="text" id="f_q" value="${esc(f.q || '')}">
+    <label class="fl">Answer</label><textarea class="tall" id="f_a">${esc(f.a || '')}</textarea>
+    <div class="grid g2"><div><label class="fl">Sort order</label><input type="text" id="f_sort" value="${f.sort == null ? 99 : f.sort}"></div>
+    <div><label class="fl">Visible on site</label><br><label class="switch"><input type="checkbox" id="f_show"${f.show !== false ? ' checked' : ''}><span class="sl"></span></label></div></div>
+    <div class="row" style="margin-top:14px"><button class="btn" id="fsave">Save FAQ</button>
+      ${isNew ? '' : verBtn('faqs', f.id, f.lang, f.q)}
+      <button class="btn ghost" id="fcancel">Cancel</button></div></div>`;
+  $('#fcancel').onclick = () => { $('#fedit').innerHTML = ''; };
+  $('#fsave').onclick = () => saveRows('faqs', [{
+    id: isNew ? undefined : f.id, key: f.key || undefined, lang: fLang,
+    q: $('#f_q').value, a: $('#f_a').value, sort: parseInt($('#f_sort').value) || 99,
+    show: $('#f_show').checked,
+  }]);
+}
+</script>
+<script>
+/* ---------- inbox ---------- */
+let iSub = 'enquiries';
+function vInbox(v) {
+  const tabs = [['enquiries', 'Partner enquiries'], ['fan', 'Fan mail'], ['signups', 'Newsletter signups']]
+    .map(([k, l]) => `<button class="tab${iSub === k ? ' on' : ''}" data-is="${k}">${l}</button>`).join('');
+  let body = '';
+  if (iSub === 'enquiries') {
+    const rows = D.enquiries;
+    body = `<table class="t"><tr><th>When</th><th>From</th><th>Message</th><th>Status</th><th></th></tr>` +
+      rows.map(e => `<tr><td class="dim">${dstr(e.created_at)}</td>
+        <td><b>${esc(e.name)}</b><br><span class="dim">${esc(e.email)}</span>${e.company ? '<br><span class="dim">' + esc(e.company) + '</span>' : ''}${e.topic ? '<br><span class="dim">re: ' + esc(e.topic) + '</span>' : ''}</td>
+        <td style="max-width:320px;white-space:pre-wrap">${esc(e.message)}</td>
+        <td>${pillFor(e.status)}<div class="dim">${e.notify_status === 'failed' ? '⚠ email alert failed' : ''}</div></td>
+        <td><select data-st="${e.id}">${['new', 'read', 'replied'].map(s => `<option${s === e.status ? ' selected' : ''}>${s}</option>`).join('')}</select></td></tr>`).join('') +
+      `</table>${rows.length ? '' : '<p class="mut">No enquiries yet.</p>'}`;
+  } else if (iSub === 'fan') {
+    const rows = D.fan_messages;
+    body = `<table class="t"><tr><th>When</th><th>From</th><th>Message</th><th>Status</th><th></th></tr>` +
+      rows.map(m => `<tr><td class="dim">${dstr(m.created_at)}</td>
+        <td><b>${esc(m.name)}</b><br><span class="dim">${esc(m.email)}</span></td>
+        <td style="max-width:340px;white-space:pre-wrap">${esc(m.message)}</td>
+        <td>${pillFor(m.status)}<div class="dim">${m.notify_status === 'failed' ? '⚠ email alert failed' : ''}</div></td>
+        <td><select data-st="${m.id}">${['new', 'read', 'replied'].map(s => `<option${s === m.status ? ' selected' : ''}>${s}</option>`).join('')}</select></td></tr>`).join('') +
+      `</table>${rows.length ? '' : '<p class="mut">No fan mail yet.</p>'}`;
+  } else {
+    const rows = D.newsletter_signups;
+    body = `<table class="t"><tr><th>Email</th><th>Lang</th><th>Status</th><th>Since</th><th></th></tr>` +
+      rows.map(s => `<tr><td>${esc(s.email)}</td><td class="dim">${esc(s.lang || '')}</td>
+        <td>${pillFor(s.status)}</td><td class="dim">${dstr(s.created_at)}</td>
+        <td><select data-sst="${s.id}">${['pending', 'confirmed', 'unsubscribed'].map(x => `<option${x === s.status ? ' selected' : ''}>${x}</option>`).join('')}</select></td></tr>`).join('') +
+      `</table>${rows.length ? '' : '<p class="mut">No signups yet.</p>'}`;
+  }
+  v.innerHTML = `<div class="card"><h2>Inbox</h2><div class="tabs" style="padding:0">${tabs}</div>
+    <p class="mut">Every enquiry, fan message and signup lands here <i>and</i> triggers an email alert. Triage with the status dropdown — nothing is ever deleted.</p></div>
+    <div class="card">${body}</div>`;
+  $$('#view [data-is]').forEach(b => b.onclick = () => { iSub = b.dataset.is; render(); });
+  $$('#view [data-st]').forEach(s => s.onchange = () => saveRows(iSub === 'enquiries' ? 'enquiries' : 'fan_messages',
+    [{ id: s.dataset.st, status: s.value }], false).then(() => toast('Marked ' + s.value)));
+  $$('#view [data-sst]').forEach(s => s.onchange = () => saveRows('newsletter_signups',
+    [{ id: s.dataset.sst, status: s.value }], false).then(() => toast('Subscriber ' + s.value)));
+}
+
+/* ---------- newsletter ---------- */
+let nIssue = null;
+function vNews(v) {
+  const issues = D.newsletter_issues || [];
+  if (nIssue) return vNewsDetail(v, issues.find(i => i.id === nIssue));
+  const li = issues.map(i => `<tr><td><b>#${i.issue_no}</b></td><td>${esc(i.subject) || '<span class="dim">(untitled)</span>'}</td>
+    <td>${pillFor(i.status)}</td><td class="dim">${dstr(i.scheduled_for)}</td>
+    <td class="dim">${i.status === 'sent' ? `${i.sent_count} sent${i.failed_count ? ` · <b style="color:var(--bad)">${i.failed_count} failed</b>` : ''}` : '—'}</td>
+    <td><button class="btn small ghost" data-nopen="${i.id}">${i.status === 'sent' ? 'View' : 'Open'}</button></td></tr>`).join('');
+  v.innerHTML = `<div class="card"><h2>Newsletter — biweekly, auto-drafted</h2>
+    <div class="note">The backend drafts one issue every two weeks, pre-filled from live reels, premieres, gallery and articles.
+    <b>Nothing sends without your one-click approval.</b> The cron (see BACKEND-NOTES.md) drafts and sends approved issues on schedule.
+    Sent issues are archived read-only — never deleted.</div></div>
+  <div class="card"><table class="t"><tr><th>Issue</th><th>Subject</th><th>Status</th><th>Scheduled</th><th>Result</th><th></th></tr>
+    ${li || '<tr><td colspan="6" class="mut">No issues yet — the next cron run drafts the first one.</td></tr>'}</table></div>`;
+  $$('#view [data-nopen]').forEach(b => b.onclick = () => { nIssue = b.dataset.nopen; render(); });
+}
+async function vNewsDetail(v, issue) {
+  if (!issue) { nIssue = null; return vNews(v); }
+  const det = await api('/api/admin/newsletter?issue_id=' + issue.id);
+  const full = det.ok ? det.issue : issue;
+  const sends = det.ok ? det.sends : [];
+  const ro = full.status === 'sent' || full.status === 'queued';
+  const secs = (full.sections || []).sort((a, b) => a.sort - b.sort).map(s => `
+    <div class="sec${s.show === false ? ' off' : ''}" data-sec="${esc(s.id)}">
+      <div class="sec-head"><b>${esc(s.title) || '<span class="dim">(untitled)</span>'}</b>
+        <span class="pill">${esc(s.kind)}</span><span class="sp" style="flex:1"></span>
+        ${ro ? '' : `<button class="btn small ghost" data-sup>↑</button><button class="btn small ghost" data-sdn>↓</button>
+        <label class="switch" title="show in email"><input type="checkbox" data-sshow${s.show !== false ? ' checked' : ''}><span class="sl"></span></label>
+        <button class="btn small danger" data-sdel>Remove</button>`}</div>
+      ${ro ? `<p class="mut">${esc(s.body || '').slice(0, 200)}</p>` : `
+      <label class="fl">Section title</label><input type="text" data-stitle value="${esc(s.title || '')}">
+      <label class="fl">Body text</label><textarea data-sbody>${esc(s.body || '')}</textarea>
+      ${s.kind === 'poll' ? `<label class="fl">Poll options (one per line)</label><textarea data-spoll>${esc((s.options || []).join('\n'))}</textarea>` : ''}
+      <label class="fl">Items (JSON — title/text/image_url/url per item)</label>
+      <textarea data-sitems spellcheck="false">${esc(JSON.stringify(s.items || [], null, 1))}</textarea>`}
+    </div>`).join('');
+  const sendRows = sends.map(s2 => `<tr><td>${esc(s2.email)}</td><td>${pillFor(s2.status)}</td>
+    <td class="dim">${s2.attempts}×</td><td class="dim">${esc(s2.error || '')}</td><td class="dim">${dstr(s2.sent_at)}</td></tr>`).join('');
+  v.innerHTML = `<div class="card"><div class="row">
+      <button class="btn small ghost" id="nback">← All issues</button>
+      <h2 style="margin:0">Issue #${full.issue_no} ${pillFor(full.status)}</h2><div class="sp" style="flex:1"></div>
+      ${verBtn('newsletter_issue', full.id, '', 'Issue #' + full.issue_no)}</div>
+    ${ro ? '<div class="note">Archived read-only — sent issues can\'t be edited or re-sent.</div>' : ''}
+    <label class="fl">Subject line</label>
+    <input type="text" id="nsub" value="${esc(full.subject || '')}" ${ro ? 'disabled' : ''}>
+    <div class="grid g2"><div><label class="fl">Scheduled for</label>
+      <input type="datetime-local" id="nsched" value="${(full.scheduled_for || '').slice(0, 16)}" ${ro ? 'disabled' : ''}></div>
+      <div><label class="fl">Stats</label><p class="mut">${full.sent_count || 0} sent · ${full.failed_count || 0} failed</p></div></div>
+    <h3>Sections (all editable, reorderable, show/hide)</h3>
+    <div id="nsecs">${secs || '<p class="mut">No sections.</p>'}</div>
+    ${ro ? '' : `<div class="row"><button class="btn small ghost" id="naddsec">+ Add section</button></div>
+    <div class="row" style="margin-top:16px">
+      <button class="btn" id="nsave">Save draft</button>
+      ${full.status === 'draft' ? '<button class="btn" id="napprove" style="background:var(--ok)">Approve &amp; queue for send</button>' : ''}
+      ${full.status === 'approved' ? '<button class="btn ghost" id="nunapprove">Back to draft</button><button class="btn ghost" id="nsendnow">Send on next cron run</button>' : ''}
+    </div>`}
+    </div>
+  ${sends.length ? `<div class="card"><h2>Send log</h2><table class="t"><tr><th>Email</th><th>Status</th><th>Tries</th><th>Error</th><th>When</th></tr>${sendRows}</table>
+    <p class="dim">Failed sends are retried once automatically; still-failed addresses surface here.</p></div>` : ''}`;
+  $('#nback').onclick = () => { nIssue = null; render(); };
+  if (ro) return;
+  const collect = () => {
+    const out = [];
+    $$('#nsecs .sec').forEach((el, i) => {
+      let items = [];
+      try { items = JSON.parse($('[data-sitems]', el).value || '[]'); } catch (e) { items = []; }
+      out.push({
+        id: el.dataset.sec, kind: (full.sections.find(s => s.id === el.dataset.sec) || {}).kind || 'bts',
+        title: $('[data-stitle]', el).value, body: $('[data-sbody]', el).value, items,
+        options: $('[data-spoll]', el) ? $('[data-spoll]', el).value.split('\n').map(x => x.trim()).filter(Boolean) : [],
+        show: $('[data-sshow]', el).checked, sort: i,
+      });
+    });
+    return out;
+  };
+  const act = async (action, extra) => {
+    const r = await api('/api/admin/newsletter', 'POST', Object.assign({ action, issue_id: full.id }, extra || {}));
+    if (r.ok) { await load(); render(); toast(action === 'approve' ? 'Approved — the cron will send it on schedule.' : 'Saved.'); }
+    else toast('Failed' + (r.error ? ': ' + r.error : ''), true);
+  };
+  $('#nsave').onclick = () => act('update', { subject: $('#nsub').value, sections: collect() });
+  const ap = $('#napprove'); if (ap) ap.onclick = async () => {
+    await act('update', { subject: $('#nsub').value, sections: collect() });
+    if (confirm('Approve issue #' + full.issue_no + ' for sending? Nothing goes out until the cron picks it up.')) act('approve');
+  };
+  const un = $('#nunapprove'); if (un) un.onclick = () => act('unapprove');
+  const sn = $('#nsendnow'); if (sn) sn.onclick = () => act('send_now');
+  $('#naddsec').onclick = () => {
+    full.sections.push({ id: 'sec-' + Date.now().toString(36), kind: 'bts', title: 'New section', body: '', items: [], options: [], show: true, sort: full.sections.length });
+    render();
+  };
+  $$('#nsecs [data-sup]').forEach(b => b.onclick = () => {
+    const el = b.closest('.sec'), p = el.previousElementSibling;
+    if (p && p.classList.contains('sec')) el.parentNode.insertBefore(el, p);
+  });
+  $$('#nsecs [data-sdn]').forEach(b => b.onclick = () => {
+    const el = b.closest('.sec'), n = el.nextElementSibling;
+    if (n && n.classList.contains('sec')) el.parentNode.insertBefore(n, el);
+  });
+  $$('#nsecs [data-sdel]').forEach(b => b.onclick = () => {
+    if (confirm('Remove this section from the issue?')) b.closest('.sec').remove();
+  });
+}
+</script>
+<script>
+/* ---------- toggle board ---------- */
+const TG_GROUPS = { section: 'Spotlight sections', language: 'Languages', feature: 'Features', upgrade: 'The five upgrades', newsletter: 'Newsletter' };
+function vToggles(v) {
+  const groups = {};
+  for (const t of (D.toggles || [])) (groups[t.grp || 'feature'] = groups[t.grp || 'feature'] || []).push(t);
+  const html = Object.keys(TG_GROUPS).map(g => {
+    const rows = (groups[g] || []).map(t => `<div class="tg">
+      <div class="t"><b>${esc(t.label || t.key)}</b><span>${esc(t.key)}</span></div>
+      <label class="switch"><input type="checkbox" data-tg="${esc(t.key)}"${t.enabled !== false ? ' checked' : ''}><span class="sl"></span></label></div>`).join('');
+    return rows ? `<div class="card"><h2>${TG_GROUPS[g]}</h2>${rows}</div>` : '';
+  }).join('');
+  v.innerHTML = `<div class="card"><h2>Toggle board</h2>
+    <p class="mut">One screen, plain switches. Off means fully excluded — from the nav, the page, the content API and the sitemap. No dead links, ever.</p></div>${html}`;
+  $$('#view [data-tg]').forEach(sw => sw.onchange = async () => {
+    const r = await api('/api/admin/save', 'POST', { table: 'toggles', rows: [{ key: sw.dataset.tg, enabled: sw.checked }] });
+    if (r.ok) { await load(); toast(sw.checked ? 'Switched on — live now.' : 'Switched off — excluded everywhere.'); }
+    else { sw.checked = !sw.checked; toast('Toggle failed', true); }
+  });
+}
+
+/* ---------- settings ---------- */
+let sLang = 'en';
+function vSettings(v) {
+  const s = D.settings || {};
+  const i18nRow = (label, col) => {
+    const m = s[col] || {};
+    return `<label class="fl">${label} <span class="dim">(${LANGN[sLang]})</span></label>
+      <textarea id="s_${col}" data-i18n="${col}">${esc(m[sLang] || '')}</textarea>`;
+  };
+  const socials = Object.entries(s.socials || {}).map(([k, val]) =>
+    `<div class="kv"><input type="text" value="${esc(k)}" data-sk placeholder="network (youtube, instagram, facebook, tiktok)"><input type="text" value="${esc(val)}" data-sv placeholder="URL"><button class="btn small danger" data-sdel>×</button></div>`).join('');
+  v.innerHTML = `<div class="card"><h2>Site settings</h2>
+    <div class="grid g2">
+      <div><label class="fl">Brand name</label><input type="text" id="s_brand" value="${esc(s.brand_name || '')}"></div>
+      <div><label class="fl">Launch theme</label><select id="s_theme">
+        ${['gold', 'noir', 'wine'].map(t => `<option${s.theme === t ? ' selected' : ''}>${t}</option>`).join('')}</select></div>
+    </div>
+    <div class="grid g2">
+      <div><label class="fl">Seasonal skin</label><select id="s_skin">
+        ${['none', 'halloween', 'christmas'].map(t => `<option${s.seasonal_skin === t ? ' selected' : ''}>${t}</option>`).join('')}</select>
+        <p class="dim">Applied only when the seasonal-skin toggle is on.</p></div>
+      <div><label class="fl">Concierge name</label><input type="text" id="s_cbname" value="${esc(s.chatbot_name || '')}"></div>
+    </div>
+    <div class="grid g2">
+      <div><label class="fl">Hero image URL</label><input type="url" id="s_hero" value="${esc(s.hero_image || '')}"></div>
+      <div><label class="fl">About image URL</label><input type="url" id="s_about" value="${esc(s.about_image || '')}"></div>
+    </div>
+    <div class="grid g2">
+      <div><label class="fl">Partners email (public)</label><input type="email" id="s_ep" value="${esc((s.emails || {}).partners || '')}"></div>
+      <div><label class="fl">Fan email (public)</label><input type="email" id="s_ef" value="${esc((s.emails || {}).fan || '')}"></div>
+    </div>
+    <p class="dim">The login email never appears here or anywhere on the site.</p></div>
+  <div class="card"><h2>Social links</h2><div id="socs">${socials}</div>
+    <button class="btn small ghost" id="sadd">+ Add network</button></div>
+  <div class="card"><h2>Words per language</h2>
+    <div class="row"><div><label class="fl">Language</label>${langSel(sLang, 'slang')}</div></div>
+    ${i18nRow('Tagline', 'tagline')}
+    ${i18nRow('Announcement banner text', 'announcement')}
+    ${i18nRow("Concierge greeting", 'chatbot_greeting')}
+    ${i18nRow("Concierge fallback answer", 'chatbot_fallback')}
+    <div class="row" style="margin-top:14px"><button class="btn" id="ssave">Save settings</button>
+    ${verBtn('site_settings', 'site_settings', '', 'Site settings')}</div></div>`;
+  $('#slang').onchange = e => { sLang = e.target.value; render(); };
+  $('#sadd').onclick = () => {
+    const d = document.createElement('div'); d.className = 'kv';
+    d.innerHTML = '<input type="text" data-sk placeholder="network"><input type="text" data-sv placeholder="URL"><button class="btn small danger" data-sdel>×</button>';
+    $('#socs').appendChild(d);
+  };
+  $('#socs').addEventListener('click', e => { if (e.target.hasAttribute('data-sdel')) e.target.closest('.kv').remove(); });
+  $('#ssave').onclick = async () => {
+    const socs = {};
+    $$('#socs .kv').forEach(kv => {
+      const k = $('[data-sk]', kv).value.trim(), val = $('[data-sv]', kv).value.trim();
+      if (k && val) socs[k.toLowerCase()] = val;
+    });
+    const patch = {
+      brand_name: $('#s_brand').value.trim(), theme: $('#s_theme').value,
+      seasonal_skin: $('#s_skin').value, chatbot_name: $('#s_cbname').value.trim(),
+      hero_image: $('#s_hero').value.trim(), about_image: $('#s_about').value.trim(),
+      socials: socs,
+      emails: { partners: $('#s_ep').value.trim(), fan: $('#s_ef').value.trim() },
+    };
+    for (const col of ['tagline', 'announcement', 'chatbot_greeting', 'chatbot_fallback']) {
+      const ta = $(`#s_${col}`);
+      if (ta) patch[col] = Object.assign({}, s[col] || {}, { [sLang]: ta.value });
+    }
+    await saveRows('settings', [patch]);
+  };
+}
+
+/* ---------- account ---------- */
+function vAccount(v) {
+  v.innerHTML = `<div class="card"><h2>Account</h2>
+    <p class="mut">Signed in to the Studio. The admin password lives only in your head (and the secure password store) — change it here anytime.</p>
+    <label class="fl">Current password</label><input type="password" id="a_cur" autocomplete="current-password">
+    <label class="fl">New password (min 8 chars)</label><input type="password" id="a_new" autocomplete="new-password">
+    <div class="err" id="aerr"></div>
+    <div class="row" style="margin-top:12px"><button class="btn" id="achange">Change password</button></div></div>
+  <div class="card"><h2>Press kit & QR</h2>
+    <p class="mut">Regenerated live from Studio data every time — never out of date.</p>
+    <div class="row"><a class="btn ghost" href="/api/presskit" target="_blank" style="text-decoration:none">Download press kit PDF</a>
+    <a class="btn ghost" href="/api/qrsheet" target="_blank" style="text-decoration:none">Download QR sheet PDF</a></div></div>`;
+  $('#achange').onclick = async () => {
+    const r = await api('/api/admin/password', 'POST', { current: $('#a_cur').value, next: $('#a_new').value });
+    $('#aerr').textContent = r.ok ? '' : (r.error === 'bad_current' ? 'Current password is wrong.' : r.error === 'too_short' ? 'Use at least 8 characters.' : 'Change failed.');
+    if (r.ok) { $('#a_cur').value = $('#a_new').value = ''; toast('Password changed.'); }
+  };
+}
+
+/* ---------- boot ---------- */
+async function boot() {
+  try { await load(); }
+  catch (e) { loginScreen(false); return; }
+  if (!D || !D.ok) { loginScreen(false); return; }
+  shell();
+}
+boot();
+</script>
+</body>
+</html>

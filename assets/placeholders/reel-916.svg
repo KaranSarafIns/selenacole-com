@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="540" height="960" viewBox="0 0 540 960">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#EFD694"/><stop offset=".55" stop-color="#DDBB6E"/><stop offset="1" stop-color="#B9964C"/>
+</linearGradient></defs>
+<rect width="540" height="960" fill="url(#g)"/>
+<rect x="14" y="14" width="512" height="932" fill="none" stroke="#5C4318" stroke-width="3" opacity=".55"/>
+<text x="270.0" y="466.0" text-anchor="middle" font-family="Georgia,serif" font-size="90" fill="#5C4318" opacity=".8">SC</text>
+<text x="270.0" y="547.0" text-anchor="middle" font-family="Georgia,serif" font-size="33" fill="#5C4318" opacity=".75">REEL</text>
+<text x="270.0" y="930" text-anchor="middle" font-family="monospace" font-size="14" fill="#5C4318" opacity=".6">MEDIA PENDING</text>
+</svg>

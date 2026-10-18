@@ -1,0 +1,16 @@
+{
+  "name": "Selena Cole — Official Site",
+  "short_name": "Selena Cole",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FBF3DF",
+  "theme_color": "#C9A227",
+  "icons": [
+    {
+      "src": "/assets/placeholders/avatar-11.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
