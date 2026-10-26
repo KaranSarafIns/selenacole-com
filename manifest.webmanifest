@@ -7,9 +7,15 @@
   "theme_color": "#C9A227",
   "icons": [
     {
-      "src": "/assets/placeholders/avatar-11.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/assets/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any"
     }
   ]
