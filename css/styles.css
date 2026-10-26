@@ -140,17 +140,25 @@ h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:600;line-heigh
 .select-wrap::after{content:"▾";position:absolute;right:.75rem;top:50%;transform:translateY(-50%);
   color:var(--ink-soft);pointer-events:none;font-size:.8rem}
 .theme-select{max-width:8.2rem!important}
-.nav-toggle{display:none;background:none;border:1px solid var(--line);border-radius:12px;width:46px;height:44px;cursor:pointer;position:relative}
+.nav-toggle{display:none;background:none;border:1px solid var(--line);border-radius:12px;width:46px;height:44px;cursor:pointer;position:relative;z-index:3}
 .nav-toggle span{position:absolute;left:12px;right:12px;height:2px;background:var(--ink);transition:.25s}
 .nav-toggle span:nth-child(1){top:14px}.nav-toggle span:nth-child(2){top:21px}.nav-toggle span:nth-child(3){top:28px}
 .nav-toggle[aria-expanded="true"] span:nth-child(1){top:21px;transform:rotate(45deg)}
 .nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
 .nav-toggle[aria-expanded="true"] span:nth-child(3){top:21px;transform:rotate(-45deg)}
-.mobile-nav{display:none;border-top:1px solid var(--line-soft);padding:.6rem 4% 1rem;background:var(--header-bg)}
-.mobile-nav.open{display:block}
-.mobile-nav a{display:block;padding:.8rem .2rem;text-decoration:none;font-weight:500;border-bottom:1px solid var(--line-soft)}
+/* Mobile nav (Raj 2026-10-26): right-aligned slide-in panel, never full-screen.
+   Backdrop dims the rest of the page; the hamburger stays above the panel so it
+   can close it. Panel is hidden via transform + visibility (links unfocusable). */
+.mobile-nav{position:fixed;top:0;right:0;z-index:2;height:100dvh;width:min(320px,80vw);
+  background:var(--header-bg);border-left:1px solid var(--line);box-shadow:-18px 0 44px rgba(20,14,4,.28);
+  padding:5rem 1.4rem 1.4rem;overflow-y:auto;transform:translateX(105%);visibility:hidden;
+  transition:transform .32s ease,visibility 0s linear .32s}
+.mobile-nav.open{transform:translateX(0);visibility:visible;transition:transform .32s ease}
+.mobile-nav a{display:block;padding:.85rem .2rem;text-decoration:none;font-weight:500;border-bottom:1px solid var(--line-soft)}
 .mobile-nav .select-wrap{margin:.7rem 0}
 .mobile-nav select{width:100%;max-width:none}
+.nav-backdrop{position:fixed;inset:0;z-index:1;background:rgba(12,9,4,.5);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+.nav-backdrop[hidden]{display:none}
 
 /* ---------- Hero — Gold-A composition (locked concept) ----------
    The name lives in a clear golden field ABOVE the photo; the photo blends in

@@ -52,14 +52,38 @@ $all("[data-lang-select]").forEach(function(sel){
   });
 });
 
-/* ---------- Mobile nav ---------- */
+/* ---------- Mobile nav: right slide-in panel + dimmed backdrop ----------
+   Raj 2026-10-26: the panel is min(320px,80vw), never full-screen; backdrop
+   click closes it, Esc closes it, and tapping ANY link inside closes it
+   before navigation. */
+var navBackdrop = $("[data-nav-backdrop]");
+function setNav(btn, nav, open){
+  btn.setAttribute("aria-expanded", String(open));
+  if(nav){
+    nav.classList.toggle("open", open);
+    nav.setAttribute("aria-hidden", String(!open));
+  }
+  if(navBackdrop) navBackdrop.hidden = !open;
+  document.body.style.overflow = open ? "hidden" : "";
+}
+function closeNav(){
+  $all(".nav-toggle").forEach(function(btn){
+    if(btn.getAttribute("aria-expanded") === "true"){
+      var nav = btn.closest(".site-header").querySelector(".mobile-nav");
+      setNav(btn, nav, false);
+    }
+  });
+}
 $all(".nav-toggle").forEach(function(btn){
   btn.addEventListener("click", function(){
     var open = btn.getAttribute("aria-expanded") === "true";
-    btn.setAttribute("aria-expanded", String(!open));
     var nav = btn.closest(".site-header").querySelector(".mobile-nav");
-    if(nav) nav.classList.toggle("open", !open);
+    setNav(btn, nav, !open);
   });
+});
+if(navBackdrop) navBackdrop.addEventListener("click", closeNav);
+$all(".mobile-nav a").forEach(function(a){
+  a.addEventListener("click", function(){ closeNav(); });
 });
 
 /* ---------- Announcement banner dismiss ---------- */
@@ -413,6 +437,6 @@ document.addEventListener("keydown", function(e){
     if(e.key === "ArrowLeft"){ lbStep(-1); return; }
     if(e.key === "ArrowRight"){ lbStep(1); return; }
   }
-  if(e.key === "Escape"){ toggleChat(false); toggleA11y(false); }
+  if(e.key === "Escape"){ toggleChat(false); toggleA11y(false); closeNav(); }
 });
 })();
