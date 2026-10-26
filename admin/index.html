@@ -13,6 +13,8 @@ a{color:var(--gold)}button{font-family:inherit;cursor:pointer}
 .top{position:sticky;top:0;z-index:50;background:#0c0904ee;border-bottom:1px solid var(--line);
 padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .top h1{margin:0;font-size:19px;letter-spacing:3px;color:var(--gold);font-weight:normal}
+.top h1 a.brand-home{color:inherit;text-decoration:none;transition:opacity .15s ease}
+.top h1 a.brand-home:hover{opacity:.72;text-decoration:underline;text-underline-offset:4px}
 .top .sp{flex:1}
 .tabs{display:flex;gap:4px;flex-wrap:wrap;padding:10px 16px 0}
 .tab{background:none;border:1px solid transparent;color:var(--mut);padding:8px 12px;border-radius:8px 8px 0 0;font-size:14px}
@@ -175,7 +177,7 @@ function shell() {
     return `<button class="tab${TAB === k ? ' on' : ''}" data-tab="${k}">${l}${b}</button>`;
   }).join('');
   $('#app').innerHTML = `
-    <div class="top"><h1>SELENA COLE · STUDIO</h1><div class="sp"></div>
+    <div class="top"><h1><a class="brand-home" href="/" title="View the live site">SELENA COLE</a> · STUDIO</h1><div class="sp"></div>
       <span class="dim">Raj's Studio — add, edit, hide. Nothing here can delete.</span>
       <button class="btn small ghost" id="logout">Sign out</button></div>
     <div class="tabs">${tabs}</div>
