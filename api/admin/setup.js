@@ -3,6 +3,14 @@
    Raj sets his own password here — it is never invented or stored by anyone else. */
 const B = require('../../lib/backend');
 module.exports = async (req, res) => {
+  if (req.method === 'GET') {
+    /* Status probe for the Studio boot: is a first-run password still needed? */
+    try {
+      const { data: existing, error: selErr } = await B.supa().from('admin_auth').select('id').limit(1);
+      if (selErr) throw selErr;
+      return B.json(res, 200, { ok: true, setup_required: !(existing && existing.length) });
+    } catch (e) { return B.json(res, 500, { ok: false }); }
+  }
   if (req.method !== 'POST') return B.json(res, 405, { ok: false });
   try {
     const ip = B.clientIp(req);

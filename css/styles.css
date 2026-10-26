@@ -152,25 +152,29 @@ h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:600;line-heigh
 .mobile-nav .select-wrap{margin:.7rem 0}
 .mobile-nav select{width:100%;max-width:none}
 
-/* ---------- Hero ---------- */
-.hero{position:relative;padding:0;overflow:hidden;min-height:min(96svh,860px);display:flex;align-items:flex-end}
-.hero-media{position:absolute;inset:0}
-.hero-media img,.hero-media .hero-art{width:100%;height:100%;object-fit:cover;object-position:center 22%;
+/* ---------- Hero — Gold-A composition (locked concept) ----------
+   The name lives in a clear golden field ABOVE the photo; the photo blends in
+   below it with top + bottom fades; CTAs sit on the field under the photo.
+   The name can never cover her face, at any width. */
+.hero{position:relative;padding:0;overflow:hidden;min-height:min(100svh,1040px);display:flex;flex-direction:column;
+  background:radial-gradient(130% 55% at 50% -6%, var(--bg-deep) 0%, var(--bg) 62%)}
+.hero-head{position:relative;z-index:3;text-align:center;padding:3rem 5% .2rem;width:min(1000px,96%);margin:0 auto}
+.hero-media{position:relative;flex:1 1 auto;width:100%;min-height:44svh;margin-top:.4rem}
+.hero-media img,.hero-media .hero-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 24%;
   /* Raj's non-negotiable: genuinely seamless blend, top AND bottom */
-  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 9%,#000 84%,transparent 100%);
-  mask-image:linear-gradient(to bottom,transparent 0,#000 9%,#000 84%,transparent 100%)}
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 11%,#000 80%,transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0,#000 11%,#000 80%,transparent 100%)}
 .hero-art{background:
   radial-gradient(120% 90% at 50% 10%, #F6E3AE 0%, #EFD694 34%, #DDBB6E 58%, #B9964C 100%)}
 html[data-theme="noir"] .hero-art{background:radial-gradient(120% 90% at 50% 10%, #3a2c12 0%, #1d1508 45%, #0a0703 100%)}
 html[data-theme="wine"] .hero-art{background:radial-gradient(120% 90% at 50% 10%, #6b2b44 0%, #3d1a28 45%, #1c0d14 100%)}
-.hero-veil{position:absolute;inset:0;background:var(--hero-overlay);pointer-events:none}
-.hero-content{position:relative;z-index:2;text-align:center;padding:0 5% 4.2rem;width:min(860px,94%);margin:0 auto}
 .hero-eyebrow{color:var(--gold-deep);text-transform:uppercase;letter-spacing:.28em;font-size:.75rem;font-weight:600;margin-bottom:1rem}
-.hero h1{font-size:clamp(3rem,13vw,5.4rem);letter-spacing:.04em;margin-bottom:1.1rem}
-.hero-tag{font-size:clamp(1.02rem,3.6vw,1.25rem);color:var(--ink);max-width:640px;margin:0 auto;opacity:.92}
+.hero h1{font-size:clamp(2.85rem,10.5vw,6.1rem);letter-spacing:.045em;line-height:1.05}
+.hero-tag{font-size:clamp(1.02rem,3.6vw,1.25rem);color:var(--ink);max-width:640px;margin:.95rem auto 0;opacity:.92}
+.hero-foot{position:relative;z-index:3;text-align:center;padding:0 5% 3rem;margin-top:-.6rem}
 /* Real breathing room above the CTAs — never crowded (Raj's rule b) */
-.hero-ctas{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2.6rem}
-.hero-scroll{margin-top:2.2rem;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint)}
+.hero-ctas{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.hero-scroll{margin-top:2rem;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint)}
 
 /* ---------- Cards / rails ---------- */
 .card{background:var(--surface);border:1px solid var(--line-soft);border-radius:20px;
@@ -188,6 +192,12 @@ html[data-theme="wine"] .hero-art{background:radial-gradient(120% 90% at 50% 10%
 .reel-card .reel-title{position:absolute;left:.9rem;right:.9rem;bottom:.9rem;color:#fff;font-weight:600;font-size:.95rem;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 .reel-card .reel-platform{position:absolute;top:.7rem;left:.7rem;background:rgba(0,0,0,.55);color:#fff;
   font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:.28rem .7rem;border-radius:999px}
+/* In-page video cards (on-site playback — the plan's rule) */
+.reel-card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;display:block}
+.reel-card.has-video::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;
+  background:linear-gradient(to top,rgba(0,0,0,.52),transparent);pointer-events:none}
+.reel-card.has-video .reel-title{z-index:2;pointer-events:none}
+.reel-card.has-video .reel-platform{z-index:2}
 
 /* Gallery grid */
 .set-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:1.2rem}
@@ -200,6 +210,9 @@ html[data-theme="wine"] .hero-art{background:radial-gradient(120% 90% at 50% 10%
 
 /* ---------- Sections ---------- */
 .band{background:var(--espresso);color:#F6EFE0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+/* Outline buttons on dark surfaces must stay readable (ink-on-espresso was invisible) */
+.band .btn-outline,.premiere-card .btn-outline{color:#F6EFE0;border-color:var(--gold)}
+.band .btn-outline:hover,.premiere-card .btn-outline:hover{background:rgba(201,162,39,.18)}
 .band .section-title{color:var(--gold-soft)}
 .band .section-sub{color:#cbbfa4}
 .band h1,.band h2,.band h3{color:#F6EFE0}
@@ -244,7 +257,7 @@ html[data-theme="wine"] .hero-art{background:radial-gradient(120% 90% at 50% 10%
 .article .article-body{font-size:1.08rem}
 .article .article-body p{margin-bottom:1.2rem}
 .article-hero{border-radius:20px;overflow:hidden;margin:1.6rem 0;border:1px solid var(--line)}
-.article-hero img{aspect-ratio:16/9;object-fit:cover;width:100%}
+.article-hero img{aspect-ratio:16/9;object-fit:cover;object-position:center 18%;width:100%}
 
 /* ---------- Footer ---------- */
 .site-footer{background:var(--espresso);color:#E9DCC2;border-top:1px solid var(--line);margin-top:3rem}
@@ -368,16 +381,22 @@ html[dir="rtl"] .chat-panel,html[dir="rtl"] .a11y-panel{right:auto;left:1.2rem}
   .nav-toggle{display:block}
   .two-col{grid-template-columns:1fr;gap:1.8rem}
   .premiere-card{grid-template-columns:1fr}
-  .header-actions .btn span{display:none}
+  /* Header CTA hidden here (label-hiding left an empty gold pill) — the hero
+     and mobile menu both carry the Follow action on small screens. */
+  .header-actions .btn{display:none}
   .post-card{grid-template-columns:96px 1fr}
 }
 @media (max-width:560px){
   section{padding:2.6rem 0}
-  .hero{min-height:94svh}
-  .hero-content{padding-bottom:3.4rem}
-  .hero-ctas{flex-direction:column;align-items:stretch;margin-top:2.4rem}
+  .hero{min-height:96svh}
+  .hero-head{padding-top:2.2rem}
+  .hero-media{min-height:38svh}
+  .hero-foot{padding-bottom:2.4rem}
+  .hero-ctas{flex-direction:column;align-items:stretch}
   .hero-ctas .btn{width:100%}
   .select-wrap.theme-wrap{display:none}
+  .brand-tag{display:none}
+  .brand-name{white-space:nowrap;font-size:1.12rem}
   .reel-rail{grid-auto-columns:min(210px,64vw)}
   .form-card{padding:1.4rem}
   .countdown .cd{min-width:60px}

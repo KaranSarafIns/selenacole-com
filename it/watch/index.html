@@ -74,47 +74,53 @@
     <div class="premiere-card reveal" role="region" aria-label="Première in evidenza">
       <div>
         <p class="eyebrow" style="color:var(--gold-soft)">Première in evidenza</p>
-        <h2>Première in evidenza</h2>
-        <p style="color:#d9cba8;margin:.8rem 0">Il teatro. Première in alto, collezioni per mood e stagione sotto. Tocca un reel per l'anteprima, poi segui su YouTube o Instagram per l'esperienza completa.</p>
+        <h2>Golden Hour Dance</h2>
+        <p style="color:#d9cba8;margin:.8rem 0">Fifteen seconds of garden light, silk, and the spin I practiced two hundred times. This is where it all started — watch it right here; it lives nowhere else yet.</p>
         
         <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+          <a class="btn btn-primary shimmer float-gentle" href="/it/watch/premiere/golden-hour-dance/">Première in evidenza</a>
           
           
         </div>
       </div>
-      <div class="portrait"><video src="/assets/premiere-preview.mp4" poster="/assets/grok-image-34a65596-d381-4249-b2c8-bb5fed6eb97a.jpg" autoplay muted loop playsinline preload="metadata" style="aspect-ratio:16/9;width:100%;object-fit:cover;display:block" aria-label="Selena Cole — featured premiere poster"></video></div>
+      <div class="portrait"><video src="/assets/premiere-preview.mp4" poster="/assets/grok-image-34a65596-d381-4249-b2c8-bb5fed6eb97a.jpg" autoplay muted loop playsinline preload="metadata" style="aspect-ratio:9/16;width:100%;object-fit:cover;display:block" aria-label="Selena Cole — featured premiere poster"></video></div>
     </div>
   <h2 class="section-title reveal" style="margin-top:3rem">Collezioni</h2>
   
-  <div class="reveal" style="margin-top:1rem"><div class="reel-rail" role="list">
-    <div class="reel-card" data-reel>
-      <img src="/assets/grok-image-4ef7cb98-ddb0-46d7-b315-1e72fee5893a.jpg" alt="Selena Cole reel still — collage 2" loading="lazy">
-      <a class="reel-play" href="https://www.youtube.com/@teamselenacole" target="_blank" rel="noopener" aria-label="Watch on YouTube">
-        <span class="reel-play-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:26px;height:26px"><path d="M8 5v14l11-7z"/></svg></span>
-      </a>
-      <span class="reel-platform">YouTube</span>
+    <div class="mood-bar reveal" role="group" aria-label="Filter by mood">
+      <button type="button" data-mood-filter="all" class=active>All</button><button type="button" data-mood-filter="Dance">Dance</button><button type="button" data-mood-filter="Stories">Stories</button>
     </div>
-    <div class="reel-card" data-reel>
-      <img src="/assets/grok-image-b9f16839-444f-4208-8e28-fd46ad3dae60.jpg" alt="Selena Cole reel still — collage 3" loading="lazy">
-      <a class="reel-play" href="https://www.youtube.com/@teamselenacole" target="_blank" rel="noopener" aria-label="Watch on YouTube">
-        <span class="reel-play-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:26px;height:26px"><path d="M8 5v14l11-7z"/></svg></span>
-      </a>
-      <span class="reel-platform">YouTube</span>
+    <div data-mood="Dance" class="reveal">
+      <div class="set-head"><h3 class="serif" style="font-size:1.5rem">The Dance Card</h3>
+        <span class="set-season">Autumn 2026</span></div>
+      <div class="reel-rail">
+        <div class="reel-card has-video"><video src="/assets/reel-gold-rush.mp4" poster="/assets/grok-image-b9f16839-444f-4208-8e28-fd46ad3dae60.jpg" preload="none" controls playsinline aria-label="Gold Rush"></video>
+          <span class="reel-platform">Watch here</span>
+          <span class="reel-title">Gold Rush</span></div>
+        <div class="reel-card has-video"><video src="/assets/reel-garden-to-stage.mp4" poster="/assets/grok-image-bc7ec4c0-db56-4742-aa7b-8cd1087ba38e.jpg" preload="none" controls playsinline aria-label="Garden to Stage"></video>
+          <span class="reel-platform">Watch here</span>
+          <span class="reel-title">Garden to Stage</span></div>
+        <div class="reel-card has-video"><video src="/assets/reel-penthouse-practice.mp4" poster="/assets/grok-image-c8a300e8-3475-449e-b0cf-9dba03070de1.jpg" preload="none" controls playsinline aria-label="Penthouse Practice"></video>
+          <span class="reel-platform">Watch here</span>
+          <span class="reel-title">Penthouse Practice</span></div>
+      </div>
     </div>
-    <div class="reel-card" data-reel>
-      <img src="/assets/grok-image-bc7ec4c0-db56-4742-aa7b-8cd1087ba38e.jpg" alt="Selena Cole reel still — collage 4" loading="lazy">
-      <a class="reel-play" href="https://www.youtube.com/@teamselenacole" target="_blank" rel="noopener" aria-label="Watch on YouTube">
-        <span class="reel-play-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:26px;height:26px"><path d="M8 5v14l11-7z"/></svg></span>
-      </a>
-      <span class="reel-platform">YouTube</span>
+    <div data-mood="Stories" class="reveal">
+      <div class="set-head"><h3 class="serif" style="font-size:1.5rem">Selena Stories</h3>
+        <span class="set-season">Autumn 2026</span></div>
+      <div class="reel-rail">
+        <div class="reel-card has-video"><video src="/assets/reel-early-to-party.mp4" poster="/assets/poster-early-party.webp" preload="none" controls playsinline aria-label="Too Early to the Party"></video>
+          <span class="reel-platform">Watch here</span>
+          <span class="reel-title">Too Early to the Party</span></div>
+        <div class="reel-card has-video"><video src="/assets/reel-lost-umbrella.mp4" poster="/assets/poster-lost-umbrella.webp" preload="none" controls playsinline aria-label="Lost the Umbrella"></video>
+          <span class="reel-platform">Watch here</span>
+          <span class="reel-title">Lost the Umbrella</span></div>
+        <div class="reel-card has-video"><video src="/assets/reel-vegas-win.mp4" poster="/assets/poster-vegas-win.webp" preload="none" controls playsinline aria-label="The $1 Win in Vegas"></video>
+          <span class="reel-platform">Watch here</span>
+          <span class="reel-title">The $1 Win in Vegas</span></div>
+      </div>
     </div>
-    <div class="reel-card" data-reel>
-      <img src="/assets/grok-image-8a1ef99a-1a65-4abc-9b74-810056249936.jpg" alt="Selena Cole reel still — collage 5" loading="lazy">
-      <a class="reel-play" href="https://www.youtube.com/@teamselenacole" target="_blank" rel="noopener" aria-label="Watch on YouTube">
-        <span class="reel-play-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:26px;height:26px"><path d="M8 5v14l11-7z"/></svg></span>
-      </a>
-      <span class="reel-platform">YouTube</span>
-    </div></div></div>
+  
   <section class="band" style="border-radius:22px;margin-top:3rem" aria-label="Subscribe">
     <div class="wrap" style="text-align:center;padding:2.4rem 6%">
       <h2 class="section-title">Iscriviti su YouTube</h2>

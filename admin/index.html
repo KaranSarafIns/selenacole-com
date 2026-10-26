@@ -96,11 +96,11 @@ async function api(path, method, body) {
     headers: { 'Content-Type': 'application/json' },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
-  if (r.status === 401) { location.reload(); throw new Error('auth'); }
+  if (r.status === 401) { return { ok: false, status: 401, auth: true }; }
   const t = await r.text();
   try { return JSON.parse(t); } catch (e) { return { ok: false, raw: t }; }
 }
-async function load() { D = await api('/api/admin/data'); if (!D.ok) throw new Error('load'); }
+async function load() { const d = await api('/api/admin/data'); if (!d.ok) { const e = new Error('load'); e.status = d.status; throw e; } D = d; }
 
 /* ---------- version history modal (3.17) ---------- */
 async function verModal(itemType, itemId, lang, label) {
@@ -884,7 +884,15 @@ function vAccount(v) {
 /* ---------- boot ---------- */
 async function boot() {
   try { await load(); }
-  catch (e) { loginScreen(false); return; }
+  catch (e) {
+    /* Logged out (or first run): show the right screen ONCE — never reload.
+       (The old api() reloaded the page on every 401, which looped forever
+       against /api/admin/data and made the Studio flash unusably.) */
+    let setupMode = false;
+    try { const s = await api('/api/admin/setup'); setupMode = !!(s && s.setup_required); } catch (e2) {}
+    loginScreen(setupMode);
+    return;
+  }
   if (!D || !D.ok) { loginScreen(false); return; }
   shell();
 }

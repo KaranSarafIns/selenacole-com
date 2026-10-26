@@ -145,7 +145,7 @@ function sendChat(text){
   fetch("/api/chat", {method:"POST", headers:{"Content-Type":"application/json"},
     body: JSON.stringify({message:text, page:location.pathname})})
     .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
-    .then(function(d){ addMsg("bot", d.reply || CHAT_FALLBACK || "…"); })
+    .then(function(d){ addMsg("bot", d.answer || d.reply || CHAT_FALLBACK || "…"); })
     .catch(function(){
       if(/partner|brand|collab|sponsor|press|business|work with/i.test(text) && chatCfg.partner_hint)
         addMsg("bot", chatCfg.partner_hint);
@@ -224,8 +224,9 @@ $all("[data-share]").forEach(function(btn){
     } else if(navigator.clipboard){
       navigator.clipboard.writeText(url).then(function(){
         var ok = btn.getAttribute("data-copied") || "Link copied!";
+        var orig = btn.innerHTML;
         btn.textContent = ok;
-        setTimeout(function(){ location.reload(); }, 1200);
+        setTimeout(function(){ btn.innerHTML = orig; }, 1600);
       });
     }
   });
