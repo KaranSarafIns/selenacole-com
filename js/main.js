@@ -293,8 +293,126 @@ $all("form[data-endpoint]").forEach(function(form){
   });
 });
 
-/* Escape closes panels */
+/* ---------- Download protection (casual saving — Raj 2026-10-26) ----------
+   One delegated listener: right-click on any photo/video or its card does
+   nothing. Dragging is off via CSS (-webkit-user-drag) + draggable=false set
+   here and in the generated markup. Videos carry controlsList="nodownload"
+   and disablepictureinpicture (markup + set here for any stray <video>).
+   This stops casual saving only — that is the accepted scope. */
+document.addEventListener("contextmenu", function(e){
+  var t = e.target;
+  if(t && t.closest && t.closest("img, video, .reel-card, .photo-card, .portrait, .hero-media, .lightbox")) e.preventDefault();
+});
+$all("img").forEach(function(img){ img.setAttribute("draggable", "false"); });
+$all("video").forEach(function(v){
+  try{ if(v.controlsList) v.controlsList.add("nodownload"); }catch(err){}
+  v.setAttribute("disablepictureinpicture", "");
+});
+
+/* ---------- Media lightbox (shared: videos + gallery photos) ----------
+   Video cards are posters with a big play button (data-lightbox-video):
+   click opens the video LARGE with sound (a user gesture, so unmuted
+   autoplay is allowed) and native controls. Gallery photos
+   (data-lightbox-photo) open enlarged with caption + prev/next.
+   Close: x button, Esc, or backdrop click. Video pauses + resets on close.
+   Theme-aware via CSS vars; the close button takes focus on open. */
+var lb = $("#lightbox"),
+    lbImg = lb ? $(".lb-img", lb) : null,
+    lbVid = lb ? $(".lb-video", lb) : null,
+    lbCap = lb ? $(".lb-cap", lb) : null,
+    lbPrevBtn = lb ? $("[data-lb-prev]", lb) : null,
+    lbNextBtn = lb ? $("[data-lb-next]", lb) : null,
+    lbCloseBtn = lb ? $("[data-lb-close]", lb) : null;
+var lbGroup = [], lbIndex = 0, lbMode = "image", lbLastFocus = null;
+
+function lbRender(){
+  var item = lbGroup[lbIndex];
+  if(!item) return;
+  if(lbMode === "video"){
+    lbImg.hidden = true;
+    lbVid.hidden = false;
+    lbCap.textContent = item.cap || "";
+    if(item.poster) lbVid.poster = item.poster;
+    if(lbVid.getAttribute("src") !== item.src) lbVid.src = item.src;
+    lbVid.muted = false;
+    var pr = lbVid.play();
+    if(pr && pr.catch) pr.catch(function(){});
+  } else {
+    lbVid.hidden = true;
+    lbImg.hidden = false;
+    lbImg.src = item.src;
+    lbImg.alt = item.cap || "";
+    lbCap.textContent = item.cap || "";
+  }
+  var multi = lbMode === "image" && lbGroup.length > 1;
+  if(lbPrevBtn) lbPrevBtn.style.display = multi ? "" : "none";
+  if(lbNextBtn) lbNextBtn.style.display = multi ? "" : "none";
+}
+function openLightbox(mode, group, index){
+  if(!lb || !group.length) return;
+  lbMode = mode; lbGroup = group; lbIndex = index || 0;
+  lbLastFocus = document.activeElement;
+  lb.hidden = false;
+  document.body.style.overflow = "hidden";
+  lbRender();
+  if(lbCloseBtn) lbCloseBtn.focus();
+}
+function closeLightbox(){
+  if(!lb || lb.hidden) return;
+  if(lbVid){
+    try{ lbVid.pause(); }catch(e){}
+    lbVid.removeAttribute("src");
+    lbVid.removeAttribute("poster");
+    lbVid.load();
+  }
+  lb.hidden = true;
+  document.body.style.overflow = "";
+  if(lbLastFocus && lbLastFocus.focus) lbLastFocus.focus();
+}
+function lbStep(d){
+  if(lbMode !== "image" || lbGroup.length < 2) return;
+  lbIndex = (lbIndex + d + lbGroup.length) % lbGroup.length;
+  lbRender();
+}
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if(!t || !t.closest) return;
+  var vb = t.closest("[data-lightbox-video]");
+  if(vb){
+    var posterImg = vb.querySelector("img");
+    openLightbox("video", [{
+      src: vb.getAttribute("data-lightbox-video"),
+      cap: vb.getAttribute("data-lightbox-caption") || "",
+      poster: posterImg ? posterImg.getAttribute("src") : ""
+    }], 0);
+    return;
+  }
+  var ph = t.closest("[data-lightbox-photo]");
+  if(ph){
+    var imgs = $all("[data-lightbox-photo]");
+    var group = imgs.map(function(im){
+      var fig = im.closest("figure");
+      var capEl = fig ? fig.querySelector("figcaption") : null;
+      return {src: im.getAttribute("src"),
+              cap: (capEl ? capEl.textContent.trim() : "") || im.getAttribute("alt") || ""};
+    });
+    openLightbox("image", group, imgs.indexOf(ph));
+  }
+});
+if(lb){
+  lb.addEventListener("click", function(e){ if(e.target === lb) closeLightbox(); });
+  if(lbCloseBtn) lbCloseBtn.addEventListener("click", closeLightbox);
+  if(lbPrevBtn) lbPrevBtn.addEventListener("click", function(){ lbStep(-1); });
+  if(lbNextBtn) lbNextBtn.addEventListener("click", function(){ lbStep(1); });
+}
+
+/* Escape closes panels; arrows navigate the lightbox photo group */
 document.addEventListener("keydown", function(e){
+  if(lb && !lb.hidden){
+    if(e.key === "Escape"){ closeLightbox(); return; }
+    if(e.key === "ArrowLeft"){ lbStep(-1); return; }
+    if(e.key === "ArrowRight"){ lbStep(1); return; }
+  }
   if(e.key === "Escape"){ toggleChat(false); toggleA11y(false); }
 });
 })();

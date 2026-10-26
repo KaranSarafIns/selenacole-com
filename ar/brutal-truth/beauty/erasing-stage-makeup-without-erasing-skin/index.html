@@ -114,7 +114,7 @@
     </div>
     <div class="footer-bottom">
       <span>© 2026 Selena Cole. جميع الحقوق محفوظة.</span>
-      <span><a href="/ar/privacy/">Privacy</a> · <a href="/ar/terms/">Terms</a></span>
+      <span><a href="/ar/privacy/">Privacy</a> · <a href="/ar/terms/">Terms</a> · <a href="/admin">Studio</a></span>
       <span class="made-by"></span>
     </div>
   </div>
@@ -152,6 +152,16 @@
           placeholder="Ask her concierge anything…" aria-label="Message">
         <button type="submit">Send</button>
       </form>
+    </div>
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Media viewer" hidden>
+      <button class="lb-close" type="button" data-lb-close aria-label="Close viewer">×</button>
+      <button class="lb-nav lb-prev" type="button" data-lb-prev aria-label="Previous photo">‹</button>
+      <figure class="lb-stage">
+        <img class="lb-img" alt="" hidden draggable="false">
+        <video class="lb-video" controls playsinline preload="metadata" controlslist="nodownload" disablepictureinpicture hidden></video>
+        <figcaption class="lb-cap"></figcaption>
+      </figure>
+      <button class="lb-nav lb-next" type="button" data-lb-next aria-label="Next photo">›</button>
     </div>
 <script>window.SC={"lang":"ar","themeDefault":"gold","chat":{"name":"Selena's Concierge","subtitle":"Her always-on helper — AI-powered, here 24/7","opening":"مرحباً، أنا كونسيرج سيلينا — مساعدها الدائم. اسألني عن ريلزاتها، أو جديدها، أو العمل معها.","fallback":"لست متأكداً أنني فهمت — أنا مساعدها، ولست قارئ أفكار. لأسئلة المعجبين: اليوميات والمعرض عادة فيهما الجواب. للأعمال: صفحة الشراكات أو Partners@SelenaCole.com يصلان إلى فريقها الحقيقي.","quick_replies":["أحدث ريل","اعمل مع سيلينا","المعرض","اليوميات"],"qa":[{"q":"هل أنت سيلينا حقاً؟","a":"الجواب الصادق: لا — أنا الكونسيرج الخاص بها، مساعد ذكاء اصطناعي يدير هذه الدردشة على مدار الساعة. سيلينا هي من على المسرح؛ أنا فقط أوجهك إلى ريلزاتها ويومياتها والباب الصحيح للأعمال. الرسائل المرسلة عبر نماذج الموقع تصل إلى فريقها الحقيقي."},{"q":"متى تصدر الريلز الجديدة؟","a":"كل أسبوع — العروض الأولى تُرفع هنا أولاً، ثم على يوتيوب وإنستغرام. نشرتها البريدية كل أسبوعين تضمن ألا يفوتك شيء. 💫"},{"q":"أين أشاهد فيديوهاتها؟","a":"هنا في صفحة «شاهد» للعروض الأولى والمجموعات — والمكتبة الكاملة تعيش على يوتيوب (@teamselenacole) وإنستغرام (@teamselenacole) الخاصين بها."},{"q":"أين صورها؟","a":"في صفحة المعرض — مجموعات مختارة من جلساتها، كلها 9:16، بتعليقاتها الخاصة. مجموعات المواسم تتبدل؛ الهالوين أولاً."},{"q":"هل يمكنني مشاركة صورها؟","a":"مشاركة الروابط وإعادة النشر مع الإشارة مرحب بها — هكذا تكبر العائلة. إعادة رفع مجموعات كاملة باسمك، أو أي استخدام تجاري، يحتاج إذناً: Partners@SelenaCole.com لذلك."},{"q":"ما هو brutal truth؟","a":"يومياتها بلا فلتر — آراء جريئة، صدق مُختبَر حتى التحطم، وركن Guy's Guide لابن عمها. ابدأ بمقال الليغنغ — فهو الذي أطلق كل شيء."},{"q":"من يكتب Guy's Guide؟","a":"ابن عمها — وسيم، صاحب رأي، وتحرره سيلينا قليلاً. يغطي جانب الرجال: الملابس الداخلية، العناية، الأشياء التي لا يقولها أحد بصوت عالٍ."},{"q":"كيف أعمل معها؟","a":"صفحة الشراكات هي الباب — قائمة التعاون، لمحة الجمهور، الملف الصحفي، ونموذج يذهب إلى Partners@SelenaCole.com. شارك العلامة والفكرة والجدول الزمني، وفريقها يرد."},{"q":"ما أنواع الشراكات التي تقوم بها؟","a":"حملات العلامات، المسارح والمهرجانات، تسليط الضوء الصادق على المنتجات في brutal truth، والتراخيص. ابدأ طلباً في صفحة الشراكات وفريقها يتولى الأمر."},{"q":"ما اللغات التي يتحدثها الموقع؟","a":"أربع عشرة — الإنجليزية بالإضافة إلى الإسبانية والهندية والغوجاراتية والبنجابية والفرنسية والبرتغالية والألمانية والإيطالية والعربية واليابانية والكورية والروسية والصينية. المبدل في الترويسة. 🌍"},{"q":"هل تبيع merchandise أو لديها نادٍ للمعجبين؟","a":"ليس بعد — الـmerch ونادي المعجبين في مرحلة لاحقة. نشرتها البريدية كل أسبوعين ستعلن عنهما أولاً."},{"q":"هل يمكنني إرسال بريد المعجبين؟","a":"نعم — Selena@SelenaCole.com، أو النموذج في صفحة التواصل. الملاحظات وطلبات الريلز ورسائل الحب: كلها مرحب بها. عروض الأعمال تمر عبر باب الشراكات حتى لا يضيع شيء."},{"q":"من هو Team Selena؟","a":"عائلتها للامتياز — أسستها، وآنيا راي في فريقها، وفتيات أخريات قادمات. المركز يعيش في TeamSelenaCole.com؛ هذا الموقع يبقى شخصياً."}]}};</script>
 <script src="/js/main.js" defer></script>

@@ -89,22 +89,34 @@
     <h2 class="section-title reveal">Свежее со сцены</h2>
     <div class="reveal"><div class="reel-rail" role="list">
     <div class="reel-card has-video" data-reel>
-      <video src="/assets/reel-gold-rush.mp4" poster="/assets/grok-image-b9f16839-444f-4208-8e28-fd46ad3dae60.jpg" preload="none" controls playsinline aria-label="Selena Cole in a gold sequin dress — Gold Rush"></video>
+      <button type="button" class="video-card" data-lightbox-video="/assets/reel-gold-rush.mp4" aria-label="Play video: Selena Cole in a gold sequin dress — Gold Rush">
+        <img src="/assets/grok-image-b9f16839-444f-4208-8e28-fd46ad3dae60.jpg" alt="Selena Cole in a gold sequin dress — Gold Rush" loading="lazy" draggable="false">
+        <span class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:26px;height:26px"><path d="M8 5v14l11-7z"/></svg></span>
+      </button>
       <span class="reel-platform">Watch here</span>
       
     </div>
     <div class="reel-card has-video" data-reel>
-      <video src="/assets/reel-garden-to-stage.mp4" poster="/assets/grok-image-bc7ec4c0-db56-4742-aa7b-8cd1087ba38e.jpg" preload="none" controls playsinline aria-label="Selena Cole in silk and stage light — Garden to Stage"></video>
+      <button type="button" class="video-card" data-lightbox-video="/assets/reel-garden-to-stage.mp4" aria-label="Play video: Selena Cole in silk and stage light — Garden to Stage">
+        <img src="/assets/grok-image-bc7ec4c0-db56-4742-aa7b-8cd1087ba38e.jpg" alt="Selena Cole in silk and stage light — Garden to Stage" loading="lazy" draggable="false">
+        <span class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:26px;height:26px"><path d="M8 5v14l11-7z"/></svg></span>
+      </button>
       <span class="reel-platform">Watch here</span>
       
     </div>
     <div class="reel-card has-video" data-reel>
-      <video src="/assets/reel-penthouse-practice.mp4" poster="/assets/grok-image-c8a300e8-3475-449e-b0cf-9dba03070de1.jpg" preload="none" controls playsinline aria-label="Selena Cole dancing in an ivory slip dress — Penthouse Practice"></video>
+      <button type="button" class="video-card" data-lightbox-video="/assets/reel-penthouse-practice.mp4" aria-label="Play video: Selena Cole dancing in an ivory slip dress — Penthouse Practice">
+        <img src="/assets/grok-image-c8a300e8-3475-449e-b0cf-9dba03070de1.jpg" alt="Selena Cole dancing in an ivory slip dress — Penthouse Practice" loading="lazy" draggable="false">
+        <span class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:26px;height:26px"><path d="M8 5v14l11-7z"/></svg></span>
+      </button>
       <span class="reel-platform">Watch here</span>
       
     </div>
     <div class="reel-card has-video" data-reel>
-      <video src="/assets/reel-early-to-party.mp4" poster="/assets/poster-early-party.webp" preload="none" controls playsinline aria-label="Selena Cole in a pink slip dress arriving at a venue still being set up — Too Early to the Party"></video>
+      <button type="button" class="video-card" data-lightbox-video="/assets/reel-early-to-party.mp4" aria-label="Play video: Selena Cole in a pink slip dress arriving at a venue still being set up — Too Early to the Party">
+        <img src="/assets/poster-early-party.webp" alt="Selena Cole in a pink slip dress arriving at a venue still being set up — Too Early to the Party" loading="lazy" draggable="false">
+        <span class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:26px;height:26px"><path d="M8 5v14l11-7z"/></svg></span>
+      </button>
       <span class="reel-platform">Watch here</span>
       
     </div></div></div>
@@ -233,7 +245,7 @@
     </div>
     <div class="footer-bottom">
       <span>© 2026 Selena Cole. Все права защищены.</span>
-      <span><a href="/ru/privacy/">Privacy</a> · <a href="/ru/terms/">Terms</a></span>
+      <span><a href="/ru/privacy/">Privacy</a> · <a href="/ru/terms/">Terms</a> · <a href="/admin">Studio</a></span>
       <span class="made-by"></span>
     </div>
   </div>
@@ -271,6 +283,16 @@
           placeholder="Ask her concierge anything…" aria-label="Message">
         <button type="submit">Send</button>
       </form>
+    </div>
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Media viewer" hidden>
+      <button class="lb-close" type="button" data-lb-close aria-label="Close viewer">×</button>
+      <button class="lb-nav lb-prev" type="button" data-lb-prev aria-label="Previous photo">‹</button>
+      <figure class="lb-stage">
+        <img class="lb-img" alt="" hidden draggable="false">
+        <video class="lb-video" controls playsinline preload="metadata" controlslist="nodownload" disablepictureinpicture hidden></video>
+        <figcaption class="lb-cap"></figcaption>
+      </figure>
+      <button class="lb-nav lb-next" type="button" data-lb-next aria-label="Next photo">›</button>
     </div>
 <script>window.SC={"lang":"ru","themeDefault":"gold","chat":{"name":"Selena's Concierge","subtitle":"Her always-on helper — AI-powered, here 24/7","opening":"Привет, я консьерж Селены — её круглосуточный помощник. Спрашивайте о её рилсах, новинках или сотрудничестве.","fallback":"Не уверен, что понял, — я её помощник, а не телепат. Вопросы фанатов: в Дневнике и Галерее обычно есть ответ. Бизнес: страница «Партнёрам» или Partners@SelenaCole.com соединят с её настоящей командой.","quick_replies":["Свежий рилс","Работать с Селеной","Галерея","Дневник"],"qa":[{"q":"Ты правда Селена?","a":"Честный ответ: нет — я её консьерж, ИИ-помощник, который ведёт этот чат круглосуточно. Селена — та, что на сцене; я лишь направляю вас к её рилсам, её дневнику и правильной двери для бизнеса. Сообщения через формы сайта доходят до её настоящей команды."},{"q":"Когда выходят новые рилсы?","a":"Каждую неделю — премьеры появляются сначала здесь, затем на YouTube и в Instagram. Её рассылка раз в две недели не даст ничего пропустить. 💫"},{"q":"Где смотреть её видео?","a":"Прямо здесь, на странице «Смотреть», — премьеры и коллекции; вся библиотека живёт на её YouTube (@teamselenacole) и в Instagram (@teamselenacole)."},{"q":"Где её фото?","a":"На странице «Галерея» — отобранные серии с её съёмок, все 9:16, с подписями её словами. Сезонные подборки меняются; сначала Хэллоуин."},{"q":"Можно делиться её фото?","a":"Делиться ссылками и репостить с указанием авторства — приветствуется, так растёт семья. Перезаливать целые серии как свои или использовать коммерчески — только с разрешения: Partners@SelenaCole.com для этого."},{"q":"Что такое brutal truth?","a":"Её дневник без фильтра — смелые мнения, честность, проверенная до предела, плюс уголок Guy's Guide её кузена. Начните со статьи про леггинсы — с неё всё началось."},{"q":"Кто пишет Guy's Guide?","a":"Её кузен — dashing, со своим мнением, слегка отредактированный Селеной. Он ведёт мужскую сторону: боксёры, груминг, то, о чём вслух не говорят."},{"q":"Как с ней работать?","a":"Страница «Партнёрам» — это дверь: меню сотрудничества, срез аудитории, пресс-кит и форма на Partners@SelenaCole.com. Расскажите о бренде, идее и сроках — и её команда ответит."},{"q":"Какие партнёрства она делает?","a":"Кампании брендов, сцены и фестивали, честные фичи продуктов в brutal truth и лицензирование. Начните запрос на странице «Партнёрам» — и её команда подхватит."},{"q":"На скольких языках сайт?","a":"На четырнадцати — английский плюс испанский, хинди, гуджарати, панджаби, французский, португальский, немецкий, итальянский, арабский, японский, корейский, русский и китайский. Переключатель в шапке. 🌍"},{"q":"Она продаёт мерч или есть фан-клуб?","a":"Пока нет — мерч и фан-клуб на более позднем этапе. Её рассылка раз в две недели объявит о них первой."},{"q":"Можно отправить фан-почту?","a":"Да — Selena@SelenaCole.com или форма на странице контактов. Заметки, запросы рилсов, любовные письма: всё приветствуется. Бизнес-питчи — через дверь «Партнёрам», чтобы ничего не потерялось."},{"q":"Кто такая Team Selena?","a":"Её франшизная семья — она её основала, Аанья Раи в её команде, и придут ещё девочки. Хаб живёт на TeamSelenaCole.com; этот сайт остаётся личным."}]}};</script>
 <script src="/js/main.js" defer></script>

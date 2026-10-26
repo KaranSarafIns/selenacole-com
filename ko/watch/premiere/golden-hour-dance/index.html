@@ -83,7 +83,10 @@
       </form>
       <div class="form-success" role="status" style="color:var(--gold-soft);margin-top:1rem"><strong>You're on the list — see you at showtime.</strong></div>
     </div>
-    <div class="portrait"><video src="/assets/premiere-preview.mp4" poster="/assets/grok-image-34a65596-d381-4249-b2c8-bb5fed6eb97a.jpg" controls playsinline preload="metadata" style="aspect-ratio:9/16;width:100%;object-fit:cover;display:block" aria-label="Golden Hour Dance"></video></div>
+    <div class="portrait"><button type="button" class="video-card video-card-portrait" data-lightbox-video="/assets/premiere-preview.mp4" aria-label="Play the premiere: Golden Hour Dance">
+          <img src="/assets/grok-image-34a65596-d381-4249-b2c8-bb5fed6eb97a.jpg" alt="Selena Cole — featured premiere poster" draggable="false">
+          <span class="play-btn play-btn-xl"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:26px;height:26px"><path d="M8 5v14l11-7z"/></svg></span>
+        </button></div>
   </div>
 </div></section>
 </main>
@@ -119,7 +122,7 @@
     </div>
     <div class="footer-bottom">
       <span>© 2026 Selena Cole. All rights reserved.</span>
-      <span><a href="/ko/privacy/">Privacy</a> · <a href="/ko/terms/">Terms</a></span>
+      <span><a href="/ko/privacy/">Privacy</a> · <a href="/ko/terms/">Terms</a> · <a href="/admin">Studio</a></span>
       <span class="made-by"></span>
     </div>
   </div>
@@ -157,6 +160,16 @@
           placeholder="Ask her concierge anything…" aria-label="Message">
         <button type="submit">Send</button>
       </form>
+    </div>
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Media viewer" hidden>
+      <button class="lb-close" type="button" data-lb-close aria-label="Close viewer">×</button>
+      <button class="lb-nav lb-prev" type="button" data-lb-prev aria-label="Previous photo">‹</button>
+      <figure class="lb-stage">
+        <img class="lb-img" alt="" hidden draggable="false">
+        <video class="lb-video" controls playsinline preload="metadata" controlslist="nodownload" disablepictureinpicture hidden></video>
+        <figcaption class="lb-cap"></figcaption>
+      </figure>
+      <button class="lb-nav lb-next" type="button" data-lb-next aria-label="Next photo">›</button>
     </div>
 <script>window.SC={"lang":"ko","themeDefault":"gold","chat":{"name":"Selena's Concierge","subtitle":"Her always-on helper — AI-powered, here 24/7","opening":"안녕, 난 Selena의 컨시어지야 — 그녀의 24시간 헬퍼. 그녀의 릴, 새 소식, 콜라보에 대해 물어봐.","fallback":"잘 못 알아들었나 봐 — 난 그녀의 헬퍼지, 독심술사가 아니야. 팬 질문: 일기랑 갤러리에 대개 답이 있어. 비즈니스: 파트너 페이지나 Partners@SelenaCole.com이 진짜 팀에 닿아.","quick_replies":["최신 릴","Selena와 일하기","갤러리","일기"],"qa":[{"q":"진짜 Selena야?","a":"솔직한 답: 아니 — 난 그녀의 컨시어지, 이 채팅을 24시간 돌리는 AI 헬퍼야. 무대에 있는 건 Selena. 난 그녀의 릴이랑 일기, 비즈니스의 올바른 문으로 안내할 뿐. 사이트 폼으로 보낸 메시지는 진짜 팀에 닿아."},{"q":"새 릴은 언제 나와?","a":"매주 — 프리미어는 여기가 처음, 그 다음 YouTube랑 Instagram으로. 2주마다 오는 뉴스레터면 놓칠 일 없어. 💫"},{"q":"그녀 영상은 어디서 봐?","a":"여기 보기 페이지에서 프리미어랑 컬렉션을 — 풀 라이브러리는 그녀의 YouTube(@teamselenacole)이랑 Instagram(@teamselenacole)에 있어."},{"q":"그녀 사진은 어디 있어?","a":"갤러리 페이지 — 촬영에서 고른 세트, 전부 9:16, 그녀 말로 캡션. 시즌 세트는 교체돼. 일단 핼러윈."},{"q":"그녀 사진을 공유해도 돼?","a":"링크 공유랑 크레딧 달린 리포스트는 환영 — 그렇게 패밀리가 자라. 세트 전체 재업로드나 상업적 이용은 허락이 필요해: Partners@SelenaCole.com으로."},{"q":"brutal truth가 뭐야?","a":"그녀의 노필터 일기 — 대담한 의견, 한계까지 시험한 솔직함, 사촌의 Guy's Guide 코너까지. 레깅스 기사부터 시작해 — 모든 게 거기서 시작됐어."},{"q":"Guy's Guide는 누가 써?","a":"그녀의 사촌 — 멋지고, 의견 세고, Selena가 가볍게 편집해. 남자 쪽 담당: 복서 브리프, 그루밍, 아무도 입 밖에 안 내는 것들."},{"q":"그녀와 어떻게 일해?","a":"파트너 페이지가 문 — 콜라보 메뉴, 오디언스 요약, 프레스킷, Partners@SelenaCole.com으로 가는 폼. 브랜드, 아이디어, 타임라인을 공유하면 그녀의 팀이 답장해."},{"q":"어떤 파트너십을 해?","a":"브랜드 캠페인, 무대랑 페스티벌, brutal truth의 솔직한 제품 특집, 라이선싱. 파트너 페이지에서 문의를 시작하면 그녀의 팀이 이어받아."},{"q":"사이트는 몇 개 국어를 해?","a":"14개 — 영어에 스페인어, 힌디어, 구자라트어, 펀자브어, 프랑스어, 포르투갈어, 독일어, 이탈리아어, 아랍어, 일본어, 한국어, 러시아어, 중국어. 전환은 헤더에. 🌍"},{"q":"굿즈 팔아? 팬클럽 있어?","a":"아직 — 굿즈랑 팬클럽은 다음 페이즈. 2주마다 오는 뉴스레터가 제일 먼저 알려줄 거야."},{"q":"팬 메일 보낼 수 있어?","a":"응 — Selena@SelenaCole.com이나 Contact 페이지 폼으로. 메모, 릴 요청, 러브레터: 전부 환영. 비즈니스 영업은 파트너 문으로, 잃어버리지 않게."},{"q":"Team Selena가 뭐야?","a":"그녀의 프랜차이즈 패밀리 — 그녀가 설립, Aanya Rai가 팀에, 더 많은 걸즈가 올 거야. 허브는 TeamSelenaCole.com. 이 사이트는 퍼스널하게."}]}};</script>
 <script src="/js/main.js" defer></script>

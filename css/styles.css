@@ -64,7 +64,7 @@ body{
 }
 body.readable-font{font-family:Verdana,Geneva,"DejaVu Sans",sans-serif!important;letter-spacing:.01em}
 body.readable-font h1,body.readable-font h2,body.readable-font h3,body.readable-font .serif{font-family:Georgia,"Times New Roman",serif!important}
-img{max-width:100%;height:auto;display:block}
+img{max-width:100%;height:auto;display:block;-webkit-user-drag:none}
 a{color:inherit}
 .wrap{width:min(1120px,92%);margin:0 auto}
 section{padding:3.4rem 0}
@@ -192,12 +192,52 @@ html[data-theme="wine"] .hero-art{background:radial-gradient(120% 90% at 50% 10%
 .reel-card .reel-title{position:absolute;left:.9rem;right:.9rem;bottom:.9rem;color:#fff;font-weight:600;font-size:.95rem;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 .reel-card .reel-platform{position:absolute;top:.7rem;left:.7rem;background:rgba(0,0,0,.55);color:#fff;
   font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:.28rem .7rem;border-radius:999px}
-/* In-page video cards (on-site playback — the plan's rule) */
-.reel-card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;display:block}
-.reel-card.has-video::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;
+/* Video cards (Raj 2026-10-26): poster + LARGE centered play button; the video
+   itself plays in the shared lightbox, never small/inline. The button fills the
+   card; title/platform sit above it and let clicks pass through to the button. */
+.video-card{position:absolute;inset:0;z-index:1;width:100%;height:100%;padding:0;border:0;background:none;
+  cursor:pointer;font:inherit;color:inherit;text-align:inherit;-webkit-tap-highlight-color:transparent}
+.video-card img{width:100%;height:100%;object-fit:cover;display:block}
+.video-card-portrait{position:relative;inset:auto;height:auto;display:block}
+.video-card-portrait img{aspect-ratio:9/16;width:100%;object-fit:cover}
+.play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;
+  background:var(--btn-primary-bg);color:var(--btn-primary-ink);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 12px 32px var(--gold-glow),0 0 0 6px rgba(255,255,255,.22);transition:transform .18s ease;pointer-events:none}
+.play-btn svg{width:34px!important;height:34px!important}
+.play-btn-xl{width:98px;height:98px}
+.play-btn-xl svg{width:44px!important;height:44px!important}
+.video-card:hover .play-btn,.video-card:focus-visible .play-btn{transform:translate(-50%,-50%) scale(1.09)}
+.video-card:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
+.reel-card.has-video::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;z-index:2;
   background:linear-gradient(to top,rgba(0,0,0,.52),transparent);pointer-events:none}
-.reel-card.has-video .reel-title{z-index:2;pointer-events:none}
-.reel-card.has-video .reel-platform{z-index:2}
+.reel-card.has-video .reel-title{z-index:3;pointer-events:none}
+.reel-card.has-video .reel-platform{z-index:3;pointer-events:none}
+
+/* ---------- Media lightbox (shared viewer for videos + gallery photos) ---------- */
+.lightbox{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;
+  background:rgba(14,10,5,.93);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:1rem}
+.lightbox[hidden]{display:none}
+.lb-stage{margin:0;display:flex;flex-direction:column;align-items:center;gap:.9rem;max-width:min(94vw,1150px)}
+.lb-img{max-width:100%;max-height:80vh;object-fit:contain;border-radius:14px;box-shadow:0 24px 70px rgba(0,0,0,.55)}
+.lb-video{max-width:min(94vw,880px);max-height:80vh;border-radius:14px;background:#000;box-shadow:0 24px 70px rgba(0,0,0,.55)}
+.lb-cap{color:#EFE6CF;text-align:center;font-size:1rem;max-width:60ch}
+.lb-cap:empty{display:none}
+.lb-close{position:absolute;top:1rem;right:1rem;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink);font-size:1.5rem;line-height:1;cursor:pointer;z-index:2;
+  display:flex;align-items:center;justify-content:center}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:1.8rem;line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;z-index:2}
+.lb-prev{left:1rem}
+.lb-next{right:1rem}
+.lb-close:hover,.lb-nav:hover{background:var(--btn-primary-bg);color:var(--btn-primary-ink)}
+@media (max-width:640px){
+  .lb-nav{width:44px;height:44px;font-size:1.5rem}
+  .lb-prev{left:.4rem}
+  .lb-next{right:.4rem}
+  .play-btn{width:72px;height:72px}
+  .play-btn-xl{width:88px;height:88px}
+}
 
 /* Gallery grid */
 .set-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:1.2rem}
