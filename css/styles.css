@@ -96,19 +96,35 @@ h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:600;line-heigh
   background-size:280% 100%;animation:shimmer-sweep 6s ease-in-out infinite}
 @keyframes shimmer-sweep{0%{background-position:120% 0}55%,100%{background-position:-40% 0}}
 
-/* Headline gold shimmer with bronze legibility — Raj 2026-10-26: a tasteful
-   light sweep every ~3s (round 3; was 9s): the bright band crosses in the
-   first ~60% of the 3s cycle (≈1.8s), then the name rests in plain gold for
-   the remaining ≈1.2s. Theme-aware via --gold/--gold-deep; static centered
-   gold under prefers-reduced-motion (see the reduced-motion block at the end). */
+/* Headline gold shimmer with bronze legibility — ROUND 4 BUG FIX (Raj:
+   "I don't see the shimmer on the name Selena Cole"). Why the sweep was
+   invisible in rounds 2–3: the hero <h1> carries .name-shimmer AND
+   .float-gentle, and two 'animation' shorthands never merge — the later
+   rule (.float-gentle) won the cascade, so the name-shimmer keyframes
+   NEVER ran. The gradient sat static at background-position 0%, where —
+   at background-size 250% — the visible slice is only the gradient's
+   first 40% (deep golds); the bright core at 50% of the gradient sits at
+   125% of the element width, permanently off-view. Fixes: (1) the
+   explicit combined-animation rule below for elements carrying both
+   classes; (2) -webkit-text-fill-color:transparent added (iOS Safari's
+   required companion to background-clip:text); (3) a broader, brighter
+   band (45–55% of the gradient ≈ 25% of the name's width, near-white
+   core) against a deeper gold base, so the sweep is unmistakable on a
+   phone. Full sweep every ~3s: the band crosses in roughly the first
+   60% of the cycle (≈1.8s), then the name rests in deep gold ≈1.2s.
+   Static centered gold under prefers-reduced-motion (block at the end). */
 .name-shimmer{
-  background:linear-gradient(100deg,var(--gold-deep) 0%,var(--gold) 30%,#F3D27A 43%,#FFF6D8 50%,#F3D27A 57%,var(--gold) 70%,var(--gold-deep) 100%);
-  background-size:250% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
+  background:linear-gradient(100deg,var(--gold-deep) 0%,#96771A 36%,#F3D27A 45%,#FFF6D8 48%,#FFFDF6 50%,#FFF6D8 52%,#F3D27A 55%,#96771A 64%,var(--gold-deep) 100%);
+  background-size:250% auto;-webkit-background-clip:text;background-clip:text;
+  color:transparent;-webkit-text-fill-color:transparent;
   animation:name-shimmer 3s ease-in-out infinite;
   -webkit-text-stroke:1px var(--bronze);
   text-shadow:0 2px 14px rgba(92,67,24,.18);
 }
 @keyframes name-shimmer{0%{background-position:115% center}60%,100%{background-position:-35% center}}
+/* Both treatments on one element: BOTH animations must be listed in one
+   rule or the float silently replaces the shimmer (the rounds 2–3 bug). */
+.name-shimmer.float-gentle{animation:name-shimmer 3s ease-in-out infinite,float-gentle 5.5s ease-in-out infinite}
 
 /* Gentle float (4.15) — headline + primary CTA */
 .float-gentle{animation:float-gentle 5.5s ease-in-out infinite}
@@ -131,6 +147,17 @@ h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:600;line-heigh
   box-shadow:0 6px 18px var(--gold-glow)}
 .brand-name{font-family:"Playfair Display",Georgia,serif;font-weight:700;font-size:1.28rem;letter-spacing:.06em;color:var(--ink);display:block;line-height:1.1}
 .brand-tag{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+/* Header brand name shimmer (round 4): the same sweep as the hero name,
+   slightly subtler band, no stroke/shadow at this size. The background
+   shorthand resets background-clip, so the text clip is re-declared after
+   it; the transparent fill is also re-declared here (after .brand-name's
+   color in the cascade) so it can't be painted back to ink. */
+.brand-name.name-shimmer{
+  background:linear-gradient(100deg,var(--gold-deep) 0%,#96771A 36%,#E9C44C 45%,#FFF3C4 50%,#E9C44C 55%,#96771A 64%,var(--gold-deep) 100%);
+  background-size:250% auto;-webkit-background-clip:text;background-clip:text;
+  color:transparent;-webkit-text-fill-color:transparent;
+  -webkit-text-stroke:0;text-shadow:none;
+}
 .main-nav{display:flex;gap:1.5rem;align-items:center}
 .main-nav a{text-decoration:none;font-weight:500;font-size:.98rem;color:var(--ink);padding:.35rem 0;position:relative}
 .main-nav a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--gold);transition:width .22s ease}
@@ -206,8 +233,9 @@ html[data-theme="wine"] .hero-art{background:radial-gradient(120% 90% at 50% 10%
 .reel-card img{width:100%;height:100%;object-fit:cover}
 .reel-card .reel-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
   background:linear-gradient(to top,rgba(0,0,0,.55),transparent 55%);text-decoration:none}
-.reel-play-btn{width:62px;height:62px;border-radius:50%;background:var(--btn-primary-bg);color:var(--btn-primary-ink);
+.reel-play-btn{width:50px;height:50px;border-radius:50%;background:var(--btn-primary-bg);color:var(--btn-primary-ink);
   display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px var(--gold-glow)}
+.reel-play-btn svg{width:21px!important;height:21px!important}
 .reel-card .reel-title{position:absolute;left:.9rem;right:.9rem;bottom:.9rem;color:#fff;font-weight:600;font-size:.95rem;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 .reel-card .reel-platform{position:absolute;top:.7rem;left:.7rem;background:rgba(0,0,0,.55);color:#fff;
   font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:.28rem .7rem;border-radius:999px}
@@ -220,12 +248,12 @@ html[data-theme="wine"] .hero-art{background:radial-gradient(120% 90% at 50% 10%
 .video-card img{width:100%;height:100%;object-fit:cover;display:block}
 .video-card-portrait{position:relative;inset:auto;height:auto;display:block}
 .video-card-portrait img{aspect-ratio:9/16;width:100%;object-fit:cover}
-.play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;
+.play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;
   background:var(--btn-primary-bg);color:var(--btn-primary-ink);display:flex;align-items:center;justify-content:center;
   box-shadow:0 12px 32px var(--gold-glow),0 0 0 6px rgba(255,255,255,.22);transition:transform .18s ease;pointer-events:none}
-.play-btn svg{width:26px!important;height:26px!important}
-.play-btn-xl{width:72px;height:72px}
-.play-btn-xl svg{width:32px!important;height:32px!important}
+.play-btn svg{width:21px!important;height:21px!important}
+.play-btn-xl{width:60px;height:60px}
+.play-btn-xl svg{width:27px!important;height:27px!important}
 .video-card:hover .play-btn,.video-card:focus-visible .play-btn{transform:translate(-50%,-50%) scale(1.09)}
 .video-card:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
 .reel-card.has-video::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;z-index:2;
@@ -255,8 +283,8 @@ html[data-theme="wine"] .hero-art{background:radial-gradient(120% 90% at 50% 10%
   .lb-nav{width:44px;height:44px;font-size:1.5rem}
   .lb-prev{left:.4rem}
   .lb-next{right:.4rem}
-  .play-btn{width:56px;height:56px}
-  .play-btn-xl{width:66px;height:66px}
+  .play-btn{width:44px;height:44px}
+  .play-btn-xl{width:54px;height:54px}
 }
 
 /* Gallery grid */
@@ -467,5 +495,5 @@ html[dir="rtl"] .chat-panel,html[dir="rtl"] .a11y-panel{right:auto;left:1.2rem}
   *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
   html{scroll-behavior:auto}
   .reveal{opacity:1;transform:none}
-  .name-shimmer{animation:none;background-position:50% center}
+  .name-shimmer,.name-shimmer.float-gentle{animation:none!important;background-position:50% center}
 }
