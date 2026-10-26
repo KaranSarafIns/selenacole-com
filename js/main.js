@@ -485,6 +485,36 @@ if(lb){
   }, {passive:false});
 }
 
+/* ---------- Studio hero picker (runtime swap) ----------
+   The baked-in homepage hero is the champagne penthouse (item 16) — the
+   static fallback that can never break. Raj can pick a different hero in
+   Studio → Settings → "Homepage hero image": the choice is stored in
+   site_settings.hero_image, published by /api/content, and swapped in here.
+   Uploads from his PC arrive as absolute bucket URLs; presets are /assets
+   paths — both work as-is. Any failure (API down, empty value) silently
+   keeps the baked hero. */
+var HERO_ALTS = {
+  "/assets/hero-penthouse.webp": "Selena Cole in a champagne slip dress, smiling in a penthouse at sunset, the city skyline behind her",
+  "/assets/hero-garden-wide.webp": "Selena Cole in a floral dress, smiling in a sunlit garden above the sea",
+  "/assets/hero-red-rooftop.webp": "Selena Cole in a red satin dress on a rooftop at sunset, the city skyline behind her",
+  "/assets/hero-white-camisole.webp": "Selena Cole in a white camisole and jeans, smiling in bright daylight"
+};
+var heroImgEl = document.querySelector("[data-hero-img]");
+if(heroImgEl){
+  var pageLang = (document.documentElement.getAttribute("lang") || "en").toLowerCase();
+  fetch("/api/content?lang=" + encodeURIComponent(pageLang), {cache: "no-store"})
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(d){
+      var url = d && d.settings && d.settings.hero_image;
+      if(!url || typeof url !== "string") return;
+      if(heroImgEl.getAttribute("src") !== url){
+        heroImgEl.src = url;
+        if(HERO_ALTS[url]) heroImgEl.alt = HERO_ALTS[url];
+      }
+    })
+    .catch(function(){});
+}
+
 /* Escape closes panels; arrows navigate the lightbox group (photos + videos) */
 document.addEventListener("keydown", function(e){
   if(lb && !lb.hidden){

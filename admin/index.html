@@ -79,6 +79,11 @@ max-height:86vh;overflow:auto;padding:20px}
 .note{background:#1d160b;border-left:3px solid var(--gold-d);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px;color:var(--mut)}
 .err{color:var(--bad);font-size:13px;margin-top:8px}
 @media(max-width:640px){.wrap{padding:12px 10px 70px}}
+.hero-pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:10px;margin:6px 0 4px}
+.hp-tile{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px;color:var(--cream);text-align:left;font-family:inherit}
+.hp-tile img{width:100%;height:92px;object-fit:cover;border-radius:7px;display:block}
+.hp-tile span{display:block;margin-top:6px;font-size:12.5px;line-height:1.3}
+.hp-tile.sel{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold)}
 </style>
 </head>
 <body>
@@ -817,8 +822,16 @@ function vSettings(v) {
         <p class="dim">Applied only when the seasonal-skin toggle is on.</p></div>
       <div><label class="fl">Concierge name</label><input type="text" id="s_cbname" value="${esc(s.chatbot_name || '')}"></div>
     </div>
+    <div><label class="fl">Homepage hero image — pick one, or upload your own</label>
+      <div class="hero-pick" id="hero_pick"></div>
+      <div class="row" style="margin-top:8px"><input type="file" id="s_herofile" accept="image/jpeg,image/png,image/webp" style="flex:1">
+      <input type="text" id="s_heroalt" value="Selena Cole — homepage hero" placeholder="Alt text for the upload" style="flex:2"></div>
+      <div class="err" id="s_heromsg"></div>
+      <label class="fl">Hero image URL (the picker writes here — editable by hand if ever needed)</label>
+      <input type="url" id="s_hero" value="${esc(s.hero_image || '')}">
+      <p class="dim">Picking takes effect when you press “Save settings” in the Words card below — the homepage swaps the hero in on its next load, no rebuild.</p>
+    </div>
     <div class="grid g2">
-      <div><label class="fl">Hero image URL</label><input type="url" id="s_hero" value="${esc(s.hero_image || '')}"></div>
       <div><label class="fl">About image URL</label><input type="url" id="s_about" value="${esc(s.about_image || '')}"></div>
     </div>
     <div class="grid g2">
@@ -837,6 +850,48 @@ function vSettings(v) {
     <div class="row" style="margin-top:14px"><button class="btn" id="ssave">Save settings</button>
     ${verBtn('site_settings', 'site_settings', '', 'Site settings')}</div></div>`;
   $('#slang').onchange = e => { sLang = e.target.value; render(); };
+  /* Homepage hero picker (Raj 2026-10-26): preset tiles + "upload from PC"
+     (the Gallery tab's upload flow) all write into #s_hero; the Save settings
+     button persists it and the homepage swaps the hero at runtime. */
+  const HERO_PRESETS = [
+    { url: '/assets/hero-penthouse.webp', label: 'Champagne penthouse — the current hero' },
+    { url: '/assets/hero-garden-wide.webp', label: 'The garden — the original hero' },
+    { url: '/assets/hero-red-rooftop.webp', label: 'Red satin rooftop' },
+    { url: '/assets/hero-white-camisole.webp', label: 'White camisole' },
+  ];
+  const heroPick = $('#hero_pick');
+  const selectHero = url => {
+    $('#s_hero').value = url;
+    $$('#hero_pick .hp-tile').forEach(t => t.classList.toggle('sel', t.dataset.heroUrl === url));
+  };
+  const heroTile = (url, label) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'hp-tile'; b.dataset.heroUrl = url;
+    b.innerHTML = `<img src="${esc(url)}" alt=""><span>${esc(label)}</span>`;
+    b.onclick = () => selectHero(url);
+    heroPick.appendChild(b);
+    return b;
+  };
+  HERO_PRESETS.forEach(p => heroTile(p.url, p.label));
+  const curHero = (s.hero_image || '').trim();
+  if (curHero && !HERO_PRESETS.some(p => p.url === curHero))
+    heroPick.prepend(heroTile(curHero, 'Current selection'));
+  selectHero(curHero || HERO_PRESETS[0].url);
+  $('#s_herofile').onchange = async e => {
+    const f = e.target.files[0]; if (!f) return;
+    const alt = $('#s_heroalt').value.trim();
+    if (!alt) { $('#s_heromsg').textContent = 'Alt text is required before uploading.'; return; }
+    $('#s_heromsg').textContent = 'Uploading + resizing…';
+    const buf = await f.arrayBuffer();
+    let b64 = ''; const bytes = new Uint8Array(buf);
+    for (let i = 0; i < bytes.length; i += 0x8000) b64 += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    const r = await api('/api/admin/upload', 'POST', { filename: f.name, contentBase64: btoa(b64), alt });
+    if (r.ok) {
+      heroTile(r.url, 'Your upload — ' + f.name);
+      selectHero(r.url);
+      $('#s_heromsg').textContent = 'Uploaded ✓ — selected above. Press “Save settings” below to make it the live hero.';
+    } else $('#s_heromsg').textContent = 'Upload failed: ' + (r.error || 'error');
+  };
   $('#sadd').onclick = () => {
     const d = document.createElement('div'); d.className = 'kv';
     d.innerHTML = '<input type="text" data-sk placeholder="network"><input type="text" data-sv placeholder="URL"><button class="btn small danger" data-sdel>×</button>';
