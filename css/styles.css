@@ -96,19 +96,19 @@ h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:600;line-heigh
   background-size:280% 100%;animation:shimmer-sweep 6s ease-in-out infinite}
 @keyframes shimmer-sweep{0%{background-position:120% 0}55%,100%{background-position:-40% 0}}
 
-/* Headline gold shimmer with bronze legibility — Raj 2026-10-26: a slow,
-   tasteful light sweep. 9s cycle: the bright band crosses in the first ~38%
-   (≈3.4s), then the name rests in plain gold for the remaining ≈5.6s.
-   Theme-aware via --gold/--gold-deep; static centered gold under
-   prefers-reduced-motion (see the reduced-motion block at the end). */
+/* Headline gold shimmer with bronze legibility — Raj 2026-10-26: a tasteful
+   light sweep every ~3s (round 3; was 9s): the bright band crosses in the
+   first ~60% of the 3s cycle (≈1.8s), then the name rests in plain gold for
+   the remaining ≈1.2s. Theme-aware via --gold/--gold-deep; static centered
+   gold under prefers-reduced-motion (see the reduced-motion block at the end). */
 .name-shimmer{
   background:linear-gradient(100deg,var(--gold-deep) 0%,var(--gold) 30%,#F3D27A 43%,#FFF6D8 50%,#F3D27A 57%,var(--gold) 70%,var(--gold-deep) 100%);
   background-size:250% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
-  animation:name-shimmer 9s ease-in-out infinite;
+  animation:name-shimmer 3s ease-in-out infinite;
   -webkit-text-stroke:1px var(--bronze);
   text-shadow:0 2px 14px rgba(92,67,24,.18);
 }
-@keyframes name-shimmer{0%{background-position:115% center}38%,100%{background-position:-35% center}}
+@keyframes name-shimmer{0%{background-position:115% center}60%,100%{background-position:-35% center}}
 
 /* Gentle float (4.15) — headline + primary CTA */
 .float-gentle{animation:float-gentle 5.5s ease-in-out infinite}
@@ -150,12 +150,19 @@ h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:600;line-heigh
 .nav-toggle[aria-expanded="true"] span:nth-child(1){top:21px;transform:rotate(45deg)}
 .nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
 .nav-toggle[aria-expanded="true"] span:nth-child(3){top:21px;transform:rotate(-45deg)}
-/* Mobile nav (Raj 2026-10-26): right-aligned slide-in panel, never full-screen.
-   Backdrop dims the rest of the page; the hamburger stays above the panel so it
-   can close it. Panel is hidden via transform + visibility (links unfocusable). */
-.mobile-nav{position:fixed;top:0;right:0;z-index:2;height:100dvh;width:min(320px,80vw);
-  background:var(--header-bg);border-left:1px solid var(--line);box-shadow:-18px 0 44px rgba(20,14,4,.28);
-  padding:5rem 1.4rem 1.4rem;overflow-y:auto;transform:translateX(105%);visibility:hidden;
+/* Mobile nav (Raj 2026-10-26, round 3): compact dropdown panel anchored at the
+   top-right under the header — height fits its content (capped at 75vh with
+   internal scroll), width min(320px,80vw), never full-screen. Backdrop dims the
+   page; a document-level outside click also closes it (main.js). The hamburger
+   stays above the panel so it can close it. Panel is hidden via transform +
+   visibility (links unfocusable). NOTE: positioned relative to the header box
+   (the header's backdrop-filter makes it the containing block), so top:4.85rem
+   sits just below the header's bottom edge. */
+.mobile-nav{position:fixed;top:4.85rem;right:.75rem;z-index:2;width:min(320px,80vw);
+  max-height:75vh;overflow-y:auto;
+  background:var(--header-bg);border:1px solid var(--line);border-radius:18px;
+  box-shadow:0 24px 50px rgba(20,14,4,.30);
+  padding:.55rem 1.25rem 1rem;transform:translateX(calc(100% + 1.5rem));visibility:hidden;
   transition:transform .32s ease,visibility 0s linear .32s}
 .mobile-nav.open{transform:translateX(0);visibility:visible;transition:transform .32s ease}
 .mobile-nav a{display:block;padding:.85rem .2rem;text-decoration:none;font-weight:500;border-bottom:1px solid var(--line-soft)}
@@ -204,20 +211,21 @@ html[data-theme="wine"] .hero-art{background:radial-gradient(120% 90% at 50% 10%
 .reel-card .reel-title{position:absolute;left:.9rem;right:.9rem;bottom:.9rem;color:#fff;font-weight:600;font-size:.95rem;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 .reel-card .reel-platform{position:absolute;top:.7rem;left:.7rem;background:rgba(0,0,0,.55);color:#fff;
   font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:.28rem .7rem;border-radius:999px}
-/* Video cards (Raj 2026-10-26): poster + LARGE centered play button; the video
-   itself plays in the shared lightbox, never small/inline. The button fills the
-   card; title/platform sit above it and let clicks pass through to the button. */
+/* Video cards (Raj 2026-10-26): poster + centered play button (tasteful size —
+   round 3 shrank it from 80px); the video itself plays in the shared lightbox,
+   never small/inline. The button fills the card; title/platform sit above it
+   and let clicks pass through to the button. */
 .video-card{position:absolute;inset:0;z-index:1;width:100%;height:100%;padding:0;border:0;background:none;
   cursor:pointer;font:inherit;color:inherit;text-align:inherit;-webkit-tap-highlight-color:transparent}
 .video-card img{width:100%;height:100%;object-fit:cover;display:block}
 .video-card-portrait{position:relative;inset:auto;height:auto;display:block}
 .video-card-portrait img{aspect-ratio:9/16;width:100%;object-fit:cover}
-.play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;
+.play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;
   background:var(--btn-primary-bg);color:var(--btn-primary-ink);display:flex;align-items:center;justify-content:center;
   box-shadow:0 12px 32px var(--gold-glow),0 0 0 6px rgba(255,255,255,.22);transition:transform .18s ease;pointer-events:none}
-.play-btn svg{width:34px!important;height:34px!important}
-.play-btn-xl{width:98px;height:98px}
-.play-btn-xl svg{width:44px!important;height:44px!important}
+.play-btn svg{width:26px!important;height:26px!important}
+.play-btn-xl{width:72px;height:72px}
+.play-btn-xl svg{width:32px!important;height:32px!important}
 .video-card:hover .play-btn,.video-card:focus-visible .play-btn{transform:translate(-50%,-50%) scale(1.09)}
 .video-card:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
 .reel-card.has-video::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;z-index:2;
@@ -247,8 +255,8 @@ html[data-theme="wine"] .hero-art{background:radial-gradient(120% 90% at 50% 10%
   .lb-nav{width:44px;height:44px;font-size:1.5rem}
   .lb-prev{left:.4rem}
   .lb-next{right:.4rem}
-  .play-btn{width:72px;height:72px}
-  .play-btn-xl{width:88px;height:88px}
+  .play-btn{width:56px;height:56px}
+  .play-btn-xl{width:66px;height:66px}
 }
 
 /* Gallery grid */

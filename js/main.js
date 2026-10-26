@@ -52,10 +52,11 @@ $all("[data-lang-select]").forEach(function(sel){
   });
 });
 
-/* ---------- Mobile nav: right slide-in panel + dimmed backdrop ----------
+/* ---------- Mobile nav: compact dropdown panel under the header ----------
    Raj 2026-10-26: the panel is min(320px,80vw), never full-screen; backdrop
    click closes it, Esc closes it, and tapping ANY link inside closes it
-   before navigation. */
+   before navigation. Round 3: height fits content (styles.css), and a click
+   anywhere outside the panel closes it too (handler below). */
 var navBackdrop = $("[data-nav-backdrop]");
 function setNav(btn, nav, open){
   btn.setAttribute("aria-expanded", String(open));
@@ -84,6 +85,18 @@ $all(".nav-toggle").forEach(function(btn){
 if(navBackdrop) navBackdrop.addEventListener("click", closeNav);
 $all(".mobile-nav a").forEach(function(a){
   a.addEventListener("click", function(){ closeNav(); });
+});
+/* Round 3 (Raj): tapping ANYWHERE outside the open panel closes it without
+   navigating — the backdrop only covers the header strip (the header's
+   backdrop-filter makes it the containing block for fixed children), so this
+   document-level handler is what actually catches taps on page content.
+   Clicks on the toggle itself (it toggles) and inside the panel are exempt. */
+document.addEventListener("click", function(e){
+  var anyOpen = $all(".nav-toggle").some(function(b){ return b.getAttribute("aria-expanded") === "true"; });
+  if(!anyOpen) return;
+  var t = e.target;
+  if(t && t.closest && (t.closest(".mobile-nav") || t.closest(".nav-toggle"))) return;
+  closeNav();
 });
 
 /* ---------- Announcement banner dismiss ---------- */
@@ -334,10 +347,14 @@ $all("video").forEach(function(v){
 });
 
 /* ---------- Media lightbox (shared: videos + gallery photos) ----------
-   Video cards are posters with a big play button (data-lightbox-video):
-   click opens the video LARGE with sound (a user gesture, so unmuted
-   autoplay is allowed) and native controls. Gallery photos
-   (data-lightbox-photo) open enlarged with caption + prev/next.
+   Video cards are posters with a play button (data-lightbox-video): click
+   opens the video LARGE with sound (a user gesture, so unmuted autoplay is
+   allowed) and native controls. Round 3 (Raj): videos sharing a
+   data-lightbox-group (home reel strip, each Watch collection) form one
+   playlist — prev/next arrows, arrow keys, and touch swipe move between
+   them without closing; a video with no group (the premieres) is standalone.
+   Navigating pauses the outgoing video. Gallery photos (data-lightbox-photo)
+   open enlarged with caption + the same prev/next/swipe.
    Close: x button, Esc, or backdrop click. Video pauses + resets on close.
    Theme-aware via CSS vars; the close button takes focus on open. */
 var lb = $("#lightbox"),
@@ -356,8 +373,11 @@ function lbRender(){
     lbImg.hidden = true;
     lbVid.hidden = false;
     lbCap.textContent = item.cap || "";
-    if(item.poster) lbVid.poster = item.poster;
-    if(lbVid.getAttribute("src") !== item.src) lbVid.src = item.src;
+    lbVid.poster = item.poster || "";
+    if(lbVid.getAttribute("src") !== item.src){
+      try{ lbVid.pause(); }catch(e){}
+      lbVid.src = item.src;
+    }
     lbVid.muted = false;
     var pr = lbVid.play();
     if(pr && pr.catch) pr.catch(function(){});
@@ -368,9 +388,15 @@ function lbRender(){
     lbImg.alt = item.cap || "";
     lbCap.textContent = item.cap || "";
   }
-  var multi = lbMode === "image" && lbGroup.length > 1;
-  if(lbPrevBtn) lbPrevBtn.style.display = multi ? "" : "none";
-  if(lbNextBtn) lbNextBtn.style.display = multi ? "" : "none";
+  var multi = lbGroup.length > 1;
+  if(lbPrevBtn){
+    lbPrevBtn.style.display = multi ? "" : "none";
+    lbPrevBtn.setAttribute("aria-label", lbMode === "video" ? "Previous video" : "Previous photo");
+  }
+  if(lbNextBtn){
+    lbNextBtn.style.display = multi ? "" : "none";
+    lbNextBtn.setAttribute("aria-label", lbMode === "video" ? "Next video" : "Next photo");
+  }
 }
 function openLightbox(mode, group, index){
   if(!lb || !group.length) return;
@@ -394,7 +420,8 @@ function closeLightbox(){
   if(lbLastFocus && lbLastFocus.focus) lbLastFocus.focus();
 }
 function lbStep(d){
-  if(lbMode !== "image" || lbGroup.length < 2) return;
+  if(lbGroup.length < 2) return;
+  if(lbMode === "video" && lbVid){ try{ lbVid.pause(); }catch(e){} }
   lbIndex = (lbIndex + d + lbGroup.length) % lbGroup.length;
   lbRender();
 }
@@ -403,12 +430,20 @@ document.addEventListener("click", function(e){
   if(!t || !t.closest) return;
   var vb = t.closest("[data-lightbox-video]");
   if(vb){
-    var posterImg = vb.querySelector("img");
-    openLightbox("video", [{
-      src: vb.getAttribute("data-lightbox-video"),
-      cap: vb.getAttribute("data-lightbox-caption") || "",
-      poster: posterImg ? posterImg.getAttribute("src") : ""
-    }], 0);
+    var groupName = vb.getAttribute("data-lightbox-group");
+    var buttons = groupName
+      ? $all('[data-lightbox-video][data-lightbox-group="' + groupName + '"]')
+      : [vb];
+    if(!buttons.length) buttons = [vb];
+    var vGroup = buttons.map(function(b){
+      var posterImg = b.querySelector("img");
+      return {
+        src: b.getAttribute("data-lightbox-video"),
+        cap: b.getAttribute("data-lightbox-caption") || "",
+        poster: posterImg ? posterImg.getAttribute("src") : ""
+      };
+    });
+    openLightbox("video", vGroup, buttons.indexOf(vb));
     return;
   }
   var ph = t.closest("[data-lightbox-photo]");
@@ -428,9 +463,29 @@ if(lb){
   if(lbCloseBtn) lbCloseBtn.addEventListener("click", closeLightbox);
   if(lbPrevBtn) lbPrevBtn.addEventListener("click", function(){ lbStep(-1); });
   if(lbNextBtn) lbNextBtn.addEventListener("click", function(){ lbStep(1); });
+  /* Touch swipe (round 3): a mostly-horizontal swipe over 48px moves to the
+     previous/next item in either mode. A recognized swipe swallows the
+     synthetic click so it can't also toggle the video's play state. */
+  var lbTouchX = null, lbTouchY = null;
+  lb.addEventListener("touchstart", function(e){
+    if(e.touches.length === 1){
+      lbTouchX = e.touches[0].clientX;
+      lbTouchY = e.touches[0].clientY;
+    }
+  }, {passive:true});
+  lb.addEventListener("touchend", function(e){
+    if(lbTouchX === null || lbGroup.length < 2){ lbTouchX = null; return; }
+    var t = e.changedTouches[0];
+    var dx = t.clientX - lbTouchX, dy = t.clientY - lbTouchY;
+    lbTouchX = null;
+    if(Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5){
+      e.preventDefault();
+      lbStep(dx < 0 ? 1 : -1);
+    }
+  }, {passive:false});
 }
 
-/* Escape closes panels; arrows navigate the lightbox photo group */
+/* Escape closes panels; arrows navigate the lightbox group (photos + videos) */
 document.addEventListener("keydown", function(e){
   if(lb && !lb.hidden){
     if(e.key === "Escape"){ closeLightbox(); return; }
